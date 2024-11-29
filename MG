@@ -1,0 +1,278 @@
+-- Anti-AFK Script
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new())
+end)
+
+-- Rayfield Library Load
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Function to show the notification every 90 seconds
+local function notifyLoop()
+    while true do
+        Rayfield:Notify({
+            Title = "Is there any bugs?",
+            Content = "Consider reporting any bugs in KeziHub Discord Server",
+            Duration = 6.5,  -- Duration of the notification
+            Image = 4483362458,  -- Icon ID for the notification
+        })
+        
+        wait(90)  -- Wait 90 seconds before showing the notification again
+    end
+end
+
+-- Run the notification loop asynchronously
+spawn(notifyLoop)
+
+
+-- UI Setup
+local Window = Rayfield:CreateWindow({
+    Name = "KeziHub V1.0",
+    LoadingTitle = "Kezi Specialist HUB",
+    LoadingSubtitle = "by KezTeam",
+    Theme = 'Default',
+    ConfigurationSaving = {
+        Enabled = false,
+        FolderName = "KezHub",
+        FileName = "KeziHubSettings"
+    }
+})
+
+-- Tab for Minigames
+local MinigamesTab = Window:CreateTab("Minigames", 4483362458) -- Title and icon
+
+-- Information
+MinigamesTab:CreateSection("Minigames Information")
+MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Make sure to use 1 Main Account and 5 Dummy Accounts."})
+
+-- Minigame Car
+MinigamesTab:CreateSection("Buy Car Section")
+
+-- Button to Buy Avanza 1.5G
+MinigamesTab:CreateButton({
+    Name = "Buy Avanza (ONLY FOR LOSE ACCOUNT)",
+    Callback = function()
+        local args = {
+            [1] = "Buy",
+            [2] = "2021Avanza15CVT",
+            [3] = "White",
+            [4] = "Toyota"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
+    end,
+})
+
+-- Minigames Config Section
+MinigamesTab:CreateSection("Minigames Config")
+
+-- Pending Loop Time
+local pendingLoopTime = 1.5 -- Default value
+local Input = MinigamesTab:CreateInput({
+    Name = "Pending Loop Time",
+    CurrentValue = tostring(pendingLoopTime), -- Default value as string for easy conversion
+    PlaceholderText = "Input Placeholder",
+    RemoveTextAfterFocusLost = false,
+    Flag = "Input1",
+    Callback = function(Text)
+        local time = tonumber(Text) -- Convert the input text to a number
+        if time then
+            pendingLoopTime = time
+        else
+            pendingLoopTime = 1.5
+        end
+    end,
+})
+
+-- Global flags for minigame states
+local isMiniGameWinActive = false
+local isMiniGameLoseActive = false
+
+-- Win Account Toggle
+MinigamesTab:CreateToggle({
+    Name = "Win Account",
+    CurrentValue = false,
+    Flag = "WinAccount",
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+
+        -- Function to enter the minigame
+        local function enterMinigame(vehicle)
+            local args = {
+                [1] = "Enter",
+                [2] = vehicle
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+        end
+
+        -- Function to leave the minigame
+        local function leaveMinigame(vehicle)
+            local args = {
+                [1] = "Leave",
+                [2] = vehicle
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+        end
+
+        if Value then
+            isMiniGameWinActive = true
+            enterMinigame("2021Avanza15CVT")
+
+            -- Detect when the character resets
+            player.CharacterAdded:Connect(function()
+                wait(pendingLoopTime)
+                if isMiniGameWinActive then
+                    enterMinigame("2021Avanza15CVT")
+                end
+            end)
+        else
+            -- Reset Character and leave the minigame
+            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
+            end
+            isMiniGameWinActive = false
+            leaveMinigame("2021Avanza15CVT")
+        end
+    end
+})
+
+-- Lose Account Toggle
+MinigamesTab:CreateToggle({
+    Name = "Lose Account",
+    CurrentValue = false,
+    Flag = "LoseAccount",
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+
+        -- Function to enter the minigame
+        local function enterMinigame(vehicle)
+            local args = {
+                [1] = "Enter",
+                [2] = vehicle
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+            local humanoid = player.Character:WaitForChild("Humanoid")
+
+            -- Start jumping coroutine
+            coroutine.wrap(function()
+                while isMiniGameLoseActive do
+                    humanoid.Jump = true
+                    wait(1)
+                end
+            end)()
+        end
+
+        -- Function to leave the minigame
+        local function leaveMinigame(vehicle)
+            local args = {
+                [1] = "Leave",
+                [2] = vehicle
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+        end
+
+        if Value then
+            isMiniGameLoseActive = true
+            enterMinigame("2021Avanza15CVT")
+
+            -- Detect when the character resets
+            player.CharacterAdded:Connect(function()
+                wait(pendingLoopTime)
+                if isMiniGameLoseActive then
+                    enterMinigame("2021Avanza15CVT")
+                end
+            end)
+        else
+            -- Reset Character and leave the minigame
+            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
+            end
+            isMiniGameLoseActive = false
+            leaveMinigame("2021Avanza15CVT")
+        end
+    end
+})
+
+-- LocalScript for Auto Gacha (must be inside a LocalScript for UI access)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StarterGui = game:GetService("StarterGui")
+
+-- Tab for Misc
+local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+
+-- Section
+local Section = MiscTab:CreateSection("Minigames")
+
+-- Auto Gacha Function
+local function startgacha()
+    -- Perform the action to buy the minigame box
+    local args = {
+        [1] = "Buy",
+        [2] = "Minigame Box"
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(args))
+
+    -- Wait for the animation or process to complete
+    task.wait(4)
+
+    -- Get the TextButton object in the path (in StarterGui)
+    local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+    -- Ensure button is accessible and exists
+    if button then
+        -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+        -- Simulate the button's action (for example, buying a Minigame Box)
+        local actionArgs = {
+            [1] = "Buy",
+            [2] = "Minigame Box"
+        }
+
+        -- Manually trigger the action like the button would do
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+
+        print("Simulated the button action without hiding the mouse.")
+    else
+        warn("Button not found!")
+    end
+end
+
+-- Auto Gacha Minigames Toggle
+local Toggle = MiscTab:CreateToggle({
+    Name = "AutoGacha Minigames",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        local gachaRunning = Value -- Track if the gacha loop is running
+        
+        -- Start or stop the gacha based on the toggle state
+        if Value then
+            -- If the toggle is enabled, start the gacha process in a loop
+            while gachaRunning do
+                startgacha() -- Call the function to start the Gacha
+                task.wait(0.1) -- Delay between each gacha attempt (adjust as needed)
+
+                -- Check if the toggle has been turned off during the loop
+                gachaRunning = Value
+            end
+        end
+    end,
+})
+
+
+-- Tab for Settings
+local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
+
+-- Section
+local Section = SettingsTab:CreateSection("Hub Enabled / Disabled")
+
+-- Destroy Button
+local Button = SettingsTab:CreateButton({
+    Name = "Delete UI",
+    Callback = function()
+        Rayfield:Destroy()
+    end,
+})
+
+-- Ensure UI persists on character reset
+local ScreenGui = Window:GetGui()
+ScreenGui.ResetOnSpawn = false
