@@ -51,7 +51,7 @@ MinigamesTab:CreateSection("Buy Car Section")
 
 -- Button to Buy Avanza 1.5G
 MinigamesTab:CreateButton({
-    Name = "Buy Avanza (ONLY FOR LOSE ACCOUNT)",
+    Name = "Buy Avanza (WAJIB)",
     Callback = function()
         local args = {
             [1] = "Buy",
@@ -229,10 +229,6 @@ local function startgacha()
 
         -- Manually trigger the action like the button would do
         game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
-
-        print("Simulated the button action without hiding the mouse.")
-    else
-        warn("Button not found!")
     end
 end
 
