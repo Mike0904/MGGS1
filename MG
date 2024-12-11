@@ -269,7 +269,6 @@ local Toggle = MiscTab:CreateToggle({
                 -- Check if the toggle has been turned off during the loop
                 gachaRunning = Value
             end
-        end
         else
             if gachaRunning == value then
                 break
