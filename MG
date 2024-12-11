@@ -262,7 +262,6 @@ local Toggle = MiscTab:CreateToggle({
         
         -- Start or stop the gacha based on the toggle state
         if Value then
-            -- If the toggle is enabled, start the gacha process in a loop
             while gachaRunning do
                 startgacha() -- Call the function to start the Gacha
                 task.wait(0.1) -- Delay between each gacha attempt (adjust as needed)
@@ -272,7 +271,7 @@ local Toggle = MiscTab:CreateToggle({
             end
         end
     else
-        if gachaRunning then
+        if value then
             break
         end
     end,
