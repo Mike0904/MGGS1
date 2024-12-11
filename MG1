@@ -270,9 +270,10 @@ local Toggle = MiscTab:CreateToggle({
                 gachaRunning = Value
             end
         end
-    else
-        if value then
-            break
+        else
+            if gachaRunning == value then
+                break
+            end
         end
     end,
 })
