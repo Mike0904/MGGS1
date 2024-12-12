@@ -5,26 +5,6 @@ game:GetService("Players").LocalPlayer.Idled:Connect(function()
     vu:ClickButton2(Vector2.new())
 end)
 
-local lampuKota = workspace:FindFirstChild("Lampu Kota")
-if lampuKota then
-    lampuKota.Parent = nil
-end
-
-local lightingAmbientRevamp = workspace:FindFirstChild("LightingAmbientRevamp")
-if lightingAmbientRevamp then
-    lightingAmbientRevamp.Parent = nil
-end
-
-local stuff = workspace.Map:FindFirstChild("Stuff")
-if stuff then
-    stuff.Parent = nil
-end
-
-local roadLight = workspace.Map:FindFirstChild("RoadLight")
-if roadLight then
-    roadLight.Parent = nil
-end
-
 -- Rayfield Library Load
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
