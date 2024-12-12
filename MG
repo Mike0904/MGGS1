@@ -223,6 +223,14 @@ local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 -- Section
 local Section = MiscTab:CreateSection("Minigames")
 
+-- Open Gacha UI
+local Button = MiscTab:CreateButton({
+    Name = "Open Gacha UI",
+    Callback = function()
+        fireproximityprompt(workspace.Etc.NPC.BOXSHOP.ProximityPrompt)
+    end,
+})
+
 -- Auto Gacha Function
 local function startgacha()
     -- Perform the action to buy the minigame box
@@ -266,7 +274,7 @@ local Toggle = MiscTab:CreateToggle({
                 if Value == false then
                     break
                 end
-                
+
                 startgacha() -- Call the function to start the Gacha
                 task.wait(0.1) -- Delay between each gacha attempt (adjust as needed)
 
@@ -282,6 +290,7 @@ local Toggle = MiscTab:CreateToggle({
 
 -- Tab for Settings
 local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
+local uicomplete = true
 
 -- Section
 local Section = SettingsTab:CreateSection("Hub Enabled / Disabled")
@@ -293,6 +302,32 @@ local Button = SettingsTab:CreateButton({
         Rayfield:Destroy()
     end,
 })
+
+local function optimize()
+    local lampuKota = workspace:FindFirstChild("Lampu Kota")
+    if lampuKota then
+        lampuKota.Parent = nil
+    end
+
+    local lightingAmbientRevamp = workspace:FindFirstChild("LightingAmbientRevamp")
+    if lightingAmbientRevamp then
+        lightingAmbientRevamp.Parent = nil
+    end
+
+    local stuff = workspace.Map:FindFirstChild("Stuff")
+    if stuff then
+        stuff.Parent = nil
+    end
+
+    local roadLight = workspace.Map:FindFirstChild("RoadLight")
+    if roadLight then
+        roadLight.Parent = nil
+    end
+end
+
+if uicomplete then
+    optimize()
+end
 
 -- Ensure UI persists on character reset
 local ScreenGui = Window:GetGui()
