@@ -1,0 +1,174 @@
+-- Anti-AFK Script
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:Connect(function()
+    vu:CaptureController()
+    vu:ClickButton2(Vector2.new())
+end)
+
+-- Rayfield Library Load
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Function to show the notification every 90 seconds
+local function notifyLoop()
+    while true do
+        Rayfield:Notify({
+            Title = "Is there any bugs?",
+            Content = "Consider reporting any bugs in KeziHub Discord Server",
+            Duration = 6.5,  -- Duration of the notification
+            Image = 4483362458,  -- Icon ID for the notification
+        })
+        
+        wait(90)  -- Wait 90 seconds before showing the notification again
+    end
+end
+
+-- Run the notification loop asynchronously
+spawn(notifyLoop)
+
+-- UI Setup
+local Window = Rayfield:CreateWindow({
+    Name = "KeziHub V1.0 (CHATGPT POWERED)",
+    LoadingTitle = "Kezi Specialist HUB",
+    LoadingSubtitle = "by KezTeam",
+    Theme = 'Default',
+    ConfigurationSaving = {
+        Enabled = false,
+        FolderName = "KezHub",
+        FileName = "KeziHubSettings"
+    }
+})
+
+
+-- Tab for Monitoring
+local MonitoringTab = Window:CreateTab("Monitoring", 4483362458) -- Title and icon
+
+-- Section for Monitoring Information
+MonitoringTab:CreateSection("Minigame Monitoring")
+
+-- Create Labels to show the stats in the UI
+local elapsedTimeLabel = MonitoringTab:CreateLabel("Elapsed Time: 00:00:00")
+local pointsCollectedLabel = MonitoringTab:CreateLabel("Points Collected: 0")
+
+-- Variables to track elapsed time and points collected
+local elapsedTime = 0
+local pointsCollected = 0
+
+-- Update the elapsed time and points collected every second
+game:GetService("RunService").Heartbeat:Connect(function()
+    if isMiniGameWinActive or isMiniGameLoseActive then
+        elapsedTime = elapsedTime + game:GetService("RunService").Heartbeat:Wait() -- Increment elapsed time
+        
+        -- Calculate elapsed time in hh:mm:ss format
+        local hours = math.floor(elapsedTime / 3600)
+        local minutes = math.floor((elapsedTime % 3600) / 60)
+        local seconds = math.floor(elapsedTime % 60)
+        
+        -- Format elapsed time
+        local formattedTime = string.format("%02d:%02d:%02d", hours, minutes, seconds)
+        elapsedTimeLabel.Text = "Elapsed Time: " .. formattedTime
+
+        -- Update points collected based on current active state
+        if isMiniGameWinActive then
+            pointsCollected = pointsCollected + (game.Players.LocalPlayer.Character and 10 or 0) -- Add 10 points for Win Account
+        elseif isMiniGameLoseActive then
+            pointsCollected = pointsCollected + (game.Players.LocalPlayer.Character and 5 or 0) -- Add 5 points for Lose Account
+        end
+        
+        pointsCollectedLabel.Text = "Points Collected: " .. pointsCollected
+    end
+end)
+
+-- Function to handle character reset and update points
+local function onCharacterReset()
+    if isMiniGameWinActive then
+        pointsCollected = pointsCollected + 10
+    elseif isMiniGameLoseActive then
+        pointsCollected = pointsCollected + 5
+    end
+    pointsCollectedLabel.Text = "Points Collected: " .. pointsCollected -- Update points display
+end
+
+-- Connect character reset event to update points
+game.Players.LocalPlayer.CharacterAdded:Connect(onCharacterReset)
+
+
+-- Tab for Limited's
+local LimitedTab = Window:CreateTab("Limited Sniper", 4483362458)
+
+-- Section
+local Section = LimitedTab:CreateSection("Car Dealers")
+
+-- Button to Expand
+local Button = LimitedTab:CreateButton({
+    Name = "Expand Dealer",
+    Callback = function()
+        -- Tab
+        local DealerTab = Window:CreateTab("Dealers", 4483362458)
+
+        -- Section
+        local Section = DealerTab:CreateSection("Select Dealers")
+
+        -- Buttons
+        for _, dealerName in ipairs({"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedezBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"}) do
+            -- Create a button for each dealer
+            local Button = DealerTab:CreateButton({
+                Name = "Visit " .. dealerName,  -- Set the button label to "Visit [dealerName]"
+                Callback = function()
+                    -- Access the dealer from workspace.Etc.Dealership
+                    local dealership = workspace.Etc.Dealership
+                    local dealer = dealership[dealerName]  -- Access the dealer by its name
+                    -- Check if the dealer has a valid ProximityPrompt
+                    if dealer and dealer.Prompt and typeof(dealer.Prompt) == "Instance" and dealer.Prompt:IsA("ProximityPrompt") then
+                        fireproximityprompt(dealer.Prompt)  -- Trigger the ProximityPrompt
+                    end
+                end
+            })
+        end
+    end,
+})
+
+
+-- Tab for Settings
+local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
+local uicomplete = true
+
+-- Section
+local Section = SettingsTab:CreateSection("Hub Enabled / Disabled")
+
+-- Destroy Button
+local Button = SettingsTab:CreateButton({
+    Name = "Delete UI",
+    Callback = function()
+        Rayfield:Destroy()
+    end,
+})
+
+local function optimize()
+    local lampuKota = workspace:FindFirstChild("Lampu Kota")
+    if lampuKota then
+        lampuKota.Parent = nil
+    end
+
+    local lightingAmbientRevamp = workspace:FindFirstChild("LightingAmbientRevamp")
+    if lightingAmbientRevamp then
+        lightingAmbientRevamp.Parent = nil
+    end
+
+    local stuff = workspace.Map:FindFirstChild("Stuff")
+    if stuff then
+        stuff.Parent = nil
+    end
+
+    local roadLight = workspace.Map:FindFirstChild("RoadLight")
+    if roadLight then
+        roadLight.Parent = nil
+    end
+end
+
+if uicomplete then
+    optimize()
+end
+
+-- Ensure UI persists on character reset
+local ScreenGui = Window:GetGui()
+ScreenGui.ResetOnSpawn = false
