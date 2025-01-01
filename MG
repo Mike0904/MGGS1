@@ -271,7 +271,7 @@ local function startgacha()
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
             end
 
-            task.wait(4)
+            task.wait(.1)
 
             if disablegacha then
                 break
