@@ -49,7 +49,7 @@ local function optimizeON()
     for _, folderName in ipairs(objects) do
         local folder = workspace:FindFirstChild(folderName)
         if folder then
-            folder:Destroy()  -- Delete the entire folder and all its contents
+            folder:Destroy()
         end
     end
 
@@ -61,7 +61,7 @@ local function optimizeON()
     for _, folderName in ipairs(objects) do
         local folder = workspace.Map:FindFirstChild(folderName)
         if folder then
-            folder:Destroy()  -- Delete the entire folder and all its contents
+            folder:Destroy()
         end
     end
 
@@ -76,7 +76,7 @@ local points = 0
 
 -- Point Label
 local pointsLabel = StatsTab:CreateParagraph({
-    Title = "Points Recieved", 
+    Title = "Points Recieved", -- Default Title
     Content = "Start Minigame Autofarm to display points"  -- Default message
 })
 
@@ -165,16 +165,16 @@ MinigamesTab:CreateToggle({
             optimizeON()
             enterMinigame("2021Avanza15CVT")
 
-            -- Points Stats
-            points = points + 10
-            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
-
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
                 wait(pendingLoopTime)
                 if isMiniGameWinActive then
                     wait(5)
                     enterMinigame("2021Avanza15CVT")
+                    
+                    -- Points Stats
+                    points = points + 10
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
                 end
             end)
             
@@ -235,15 +235,16 @@ MinigamesTab:CreateToggle({
             optimizeON()
             enterMinigame("2021Avanza15CVT")
 
-            -- Points Stats
-            pointsLabel:Set({Title = "Points Received", Content = "Stats only available for Win Accounts"})
-
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
                 wait(pendingLoopTime)
                 if isMiniGameLoseActive then
                     wait(5)
                     enterMinigame("2021Avanza15CVT")
+
+                    -- Points Stats
+                    points = points + 5
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
                 end
             end)
         else
