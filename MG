@@ -31,7 +31,7 @@ local Window = Rayfield:CreateWindow({
     Name = "KeziHub V1.0",
     LoadingTitle = "Kezi Specialist HUB",
     LoadingSubtitle = "by KezTeam",
-    Theme = 'Default',
+    Theme = 'Ocean',
     ConfigurationSaving = {
         Enabled = false,
         FolderName = "KezHub",
@@ -68,6 +68,17 @@ local function optimizeON()
     
 end
 
+-- Tab for Stats
+local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
+
+-- Points Tracking
+local points = 0
+
+-- Point Label
+local pointsLabel = StatsTab:CreateParagraph({
+    Title = "Points Recieved", 
+    Content = "Start Minigame Autofarm to display points"  -- Default message
+})
 
 -- Tab for Minigames
 local MinigamesTab = Window:CreateTab("Minigames", 4483362458) -- Title and icon
@@ -154,6 +165,10 @@ MinigamesTab:CreateToggle({
             optimizeON()
             enterMinigame("2021Avanza15CVT")
 
+            -- Points Stats
+            points = points + 10
+            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
+
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
                 wait(pendingLoopTime)
@@ -162,13 +177,18 @@ MinigamesTab:CreateToggle({
                     enterMinigame("2021Avanza15CVT")
                 end
             end)
+            
         else
+            isMiniGameWinActive = false
+            leaveMinigame("2021Avanza15CVT")
             -- Reset Character and leave the minigame
             if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
                 player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
             end
-            isMiniGameWinActive = false
-            leaveMinigame("2021Avanza15CVT")
+
+            -- Points Stats
+            points = 0
+            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
         end
     end
 })
@@ -215,6 +235,9 @@ MinigamesTab:CreateToggle({
             optimizeON()
             enterMinigame("2021Avanza15CVT")
 
+            -- Points Stats
+            pointsLabel:Set({Title = "Points Received", Content = "Stats only available for Win Accounts"})
+
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
                 wait(pendingLoopTime)
@@ -224,25 +247,31 @@ MinigamesTab:CreateToggle({
                 end
             end)
         else
+            isMiniGameLoseActive = false
+            leaveMinigame("2021Avanza15CVT")
+
             -- Reset Character and leave the minigame
             if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
                 player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
             end
-            isMiniGameLoseActive = false
-            leaveMinigame("2021Avanza15CVT")
+
+            -- Points Stats
+            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
         end
     end
 })
 
--- LocalScript for Auto Gacha (must be inside a LocalScript for UI access)
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local StarterGui = game:GetService("StarterGui")
+
 
 -- Tab for Misc
 local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 
 -- Section
-local Section = MiscTab:CreateSection("Minigames")
+local Section = MiscTab:CreateSection("Box")
+
+-- Local's for Gacha
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local StarterGui = game:GetService("StarterGui")
 
 -- Open Gacha UI
 local Button = MiscTab:CreateButton({
@@ -252,9 +281,14 @@ local Button = MiscTab:CreateButton({
     end,
 })
 
+-- Section
+local Section = MiscTab:CreateSection("Autogacha")
+
 -- Auto Gacha Function
 local disablegacha = false
+local disablegacha1 = false
 
+-- Minigame Gacha
 local function startgacha()
     if disablegacha == false then
         while startgacha do
@@ -280,6 +314,57 @@ local function startgacha()
     end
 end
 
+-- Limited Gacha
+local function startgacha1()
+    if disablegacha1 == false then
+        while startgacha1 do
+            local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+            if button then
+                -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+                -- Simulate the button's action (for example, buying a Minigame Box)
+                local actionArgs = {
+                    [1] = "Buy",
+                    [2] = "Limited Box"
+                }
+
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+            end
+
+            task.wait(.1)
+
+            if disablegacha1 then
+                break
+            end
+        end
+    end
+end
+
+-- Gamepass Gacha
+local function startgacha2()
+    if disablegacha1 == false then
+        while startgacha2 do
+            local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+            if button then
+                -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+                -- Simulate the button's action (for example, buying a Minigame Box)
+                local actionArgs = {
+                    [1] = "Buy",
+                    [2] = "Gamepass Box"
+                }
+
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+            end
+
+            task.wait(.1)
+
+            if disablegacha2 then
+                break
+            end
+        end
+    end
+end
 
 -- Auto Gacha Minigames Toggle
 local Toggle = MiscTab:CreateToggle({
@@ -292,6 +377,36 @@ local Toggle = MiscTab:CreateToggle({
             startgacha()
         else
             disablegacha = true
+        end
+    end,
+})
+
+-- Auto Gacha Limited Toggle
+local Toggle = MiscTab:CreateToggle({
+    Name = "AutoGacha Limited Box",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        if Value then
+            disablegacha1 = false
+            startgacha1()
+        else
+            disablegacha1 = true
+        end
+    end,
+})
+
+-- Auto Gacha Gamepass Toggle
+local Toggle = MiscTab:CreateToggle({
+    Name = "AutoGacha Gamepass Box",
+    CurrentValue = false,
+    Flag = "Toggle1",
+    Callback = function(Value)
+        if Value then
+            disablegacha2 = false
+            startgacha2()
+        else
+            disablegacha2 = true
         end
     end,
 })
@@ -310,6 +425,7 @@ local Button = SettingsTab:CreateButton({
         Rayfield:Destroy()
     end,
 })
+
 
 -- Ensure UI persists on character reset
 local ScreenGui = Window:GetGui()
