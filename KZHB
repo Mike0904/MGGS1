@@ -7,30 +7,27 @@ end)
 -- Rayfield Library Load
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Function to show the notification every 90 seconds
-local function notifyLoop()
-    while true do
-        Rayfield:Notify({
-            Title = "Is there any bugs?",
-            Content = "Consider reporting any bugs in KeziHub Discord Server",
-            Duration = 6.5,  -- Duration of the notification
-            Image = 4483362458,  -- Icon ID for the notification
-        })
-        
-        task.wait(90)
-    end
+
+local bugnotif = true
+-- Notification
+while bugnotif do
+    Rayfield:Notify({
+        Title = "Is there any bugs?",
+        Content = "Consider reporting any bugs in KeziHub Discord Server",
+        Duration = 6.5,  -- Duration of the notification
+        Image = 4483362458,  -- Icon ID for the notification
+    })
+    task.wait(90)
 end
 
--- Run the notification loop asynchronously
-spawn(notifyLoop)
 
 
 -- UI Setup
 local Window = Rayfield:CreateWindow({
-    Name = "KeziHub V1.0",
-    LoadingTitle = "Kezi Specialist HUB",
-    LoadingSubtitle = "by KezTeam",
-    Theme = 'Ocean',
+    Name = "Kezi HUB ( Powered By ChatGPT )",
+    LoadingTitle = "Kezi Hub",
+    LoadingSubtitle = "by KezSoftworks",
+    Theme = 'Amethyst',
     ConfigurationSaving = {
         Enabled = false,
         FolderName = "KezHub",
@@ -63,8 +60,6 @@ local function optimizeON()
             folder:Destroy()
         end
     end
-
-    
 end
 
 -- Tab for Stats
@@ -80,7 +75,7 @@ local pointsLabel = StatsTab:CreateParagraph({
 })
 
 -- Tab for Minigames
-local MinigamesTab = Window:CreateTab("Minigames", 4483362458) -- Title and icon
+local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
 
 -- Information
 MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
@@ -113,12 +108,12 @@ MinigamesTab:CreateSection("Minigames AutoFarm")
 local pendingLoopTime = 1.5 -- Default value
 local Input = MinigamesTab:CreateInput({
     Name = "Pending Loop Time",
-    CurrentValue = tostring(pendingLoopTime), -- Default value as string for easy conversion
+    CurrentValue = tostring(pendingLoopTime),
     PlaceholderText = "Input Placeholder",
     RemoveTextAfterFocusLost = false,
     Flag = "Input1",
     Callback = function(Text)
-        local time = tonumber(Text) -- Convert the input text to a number
+        local time = tonumber(Text)
         if time then
             pendingLoopTime = time
         else
@@ -164,6 +159,9 @@ MinigamesTab:CreateToggle({
             optimizeON()
             enterMinigame("2021Avanza15CVT")
 
+            -- Points Stats
+            points = points + 10
+            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
                 task.wait(pendingLoopTime)
@@ -172,16 +170,15 @@ MinigamesTab:CreateToggle({
                     
                     -- Points Stats
                     points = points + 10
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
                 end
             end)
-            
         else
             isMiniGameWinActive = false
             leaveMinigame("2021Avanza15CVT")
             -- Reset Character and leave the minigame
             if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
+                player.Character:FindFirstChildOfClass("Humanoid").Health = 0
             end
 
             -- Points Stats
@@ -249,7 +246,7 @@ MinigamesTab:CreateToggle({
 
             -- Points Stats
             points = points + 5
-            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
+            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
 
             -- Detect when the character resets
             player.CharacterAdded:Connect(function()
@@ -259,7 +256,7 @@ MinigamesTab:CreateToggle({
 
                     -- Points Stats
                     points = points + 5
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})  -- Update points display
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
                 end
             end)
         else
@@ -268,7 +265,7 @@ MinigamesTab:CreateToggle({
 
             -- Reset Character and leave the minigame
             if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                player.Character:FindFirstChildOfClass("Humanoid").Health = 0 -- Reset the character
+                player.Character:FindFirstChildOfClass("Humanoid").Health = 0
             end
 
             -- Points Stats
