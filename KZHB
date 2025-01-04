@@ -8,20 +8,6 @@
     -- Rayfield Library Load
     local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
-    local bugnotif = true
-    -- Notification
-    coroutine.wrap(function()
-        while bugnotif do
-            Rayfield:Notify({
-                Title = "Is there any bugs?",
-                Content = "Consider reporting any bugs in KeziHub Discord Server",
-                Duration = 6.5,  -- Duration of the notification
-                Image = 4483362458,  -- Icon ID for the notification
-            })
-            task.wait(90)
-        end
-    end)()
-
     -- UI Setup
     local Window = Rayfield:CreateWindow({
         Name = "Kezi HUB ( Powered By ChatGPT )",
@@ -35,23 +21,35 @@
         }
     })
 
+    -- Notification
+    coroutine.wrap(function()
+        while Window do
+            Rayfield:Notify({
+                Title = "Is there any bugs?",
+                Content = "Consider reporting any bugs in KeziHub Discord Server",
+                Duration = 6.5,
+                Image = megaphone,
+            })
+            task.wait(90)
+        end
+    end)()
 
 -- Tab for Stats
     -- Load StatsTab
-    local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
+    local StatsTab = Window:CreateTab("Stats")
 
     -- Points Tracking
     local points = 0
 
     -- Point Label
     local pointsLabel = StatsTab:CreateParagraph({
-        Title = "Points Recieved", -- Default Title
-        Content = "Start Minigame Autofarm to display points"  -- Default message
+        Title = "Points Recieved",
+        Content = "Start Minigame Autofarm to display points"
     })
 
 -- Tab for Minigames
     -- Load MinigamesTab
-    local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
+    local MinigamesTab = Window:CreateTab("Minigames")
 
     -- Information
     MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
@@ -108,7 +106,7 @@
     MinigamesTab:CreateSection("Minigames AutoFarm")
 
     -- Pending Loop Time
-    local pendingLoopTime = 1.5 -- Default value
+    local pendingLoopTime = 1.5
     local Input = MinigamesTab:CreateInput({
         Name = "Pending Loop Time",
         CurrentValue = tostring(pendingLoopTime),
@@ -280,7 +278,7 @@
 
 -- Tab for Misc
     -- Load MiscTab
-    local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+    local MiscTab = Window:CreateTab("Misc")
 
     -- Box Section
     local Section = MiscTab:CreateSection("Box")
@@ -311,8 +309,6 @@
                 local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
                 if button then
-                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                    -- Simulate the button's action (for example, buying a Minigame Box)
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Minigame Box"
@@ -337,8 +333,6 @@
                 local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
                 if button then
-                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                    -- Simulate the button's action (for example, buying a Minigame Box)
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Limited Box"
@@ -363,8 +357,6 @@
                 local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
                 if button then
-                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                    -- Simulate the button's action (for example, buying a Minigame Box)
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Gamepass Box"
@@ -436,18 +428,14 @@
         Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
         CurrentOption = {"None"},
         MultipleOptions = false,
-        Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Flag = "Dropdown1",
         Callback = function(Options)
-            -- Get the selected option (dealernames)
-            local selectedDealer = Options[1]  -- Only one option is selected, so we get the first element
+            local selectedDealer = Options[1]
             local dealership = workspace.Etc.Dealership
             
-            -- Verify if the selected dealer exists in the dealership folder (use 'FindFirstChild' for safety)
             local dealerFolder = dealership:FindFirstChild(selectedDealer)
             
-            -- Check if the dealer exists and if it has a 'Prompt' property
             if dealerFolder and dealerFolder:FindFirstChild("Prompt") then
-                -- Trigger the proximity prompt for the specific dealer
                 fireproximityprompt(dealerFolder.Prompt)
             else
                 Rayfield:Notify({
@@ -463,7 +451,7 @@
 
 -- Tab for Settings
     -- Load SettingsTab
-    local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
+    local SettingsTab = Window:CreateTab("Settings")
 
     -- Delete UI Section
     local Section = SettingsTab:CreateSection("Disable Hub")
@@ -475,7 +463,7 @@
         disablegacha = true
         disablegacha1 = true
         disablegacha2 = true
-        bugnotif = false
+        Window = false
     end
 
     -- Destroy Button
