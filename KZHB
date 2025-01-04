@@ -1,496 +1,492 @@
 -- Rayfield UI Setup
+    -- Anti-AFK Script
+    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        game:GetService("VirtualUser"):CaptureController()
+        game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    end)
+    
+    -- Rayfield Library Load
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- Anti-AFK Script
-game:GetService("Players").LocalPlayer.Idled:Connect(function()
-game:GetService("VirtualUser"):CaptureController()
-game:GetService("VirtualUser"):ClickButton2(Vector2.new())
-end)
+    local bugnotif = true
+    -- Notification
+    coroutine.wrap(function()
+        while bugnotif do
+            Rayfield:Notify({
+                Title = "Is there any bugs?",
+                Content = "Consider reporting any bugs in KeziHub Discord Server",
+                Duration = 6.5,  -- Duration of the notification
+                Image = 4483362458,  -- Icon ID for the notification
+            })
+            task.wait(90)
+        end
+    end)()
 
--- Rayfield Library Load
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-
-local bugnotif = true
--- Notification
-while bugnotif do
-Rayfield:Notify({
-    Title = "Is there any bugs?",
-    Content = "Consider reporting any bugs in KeziHub Discord Server",
-    Duration = 6.5,  -- Duration of the notification
-    Image = 4483362458,  -- Icon ID for the notification
-})
-task.wait(90)
-end
-
--- UI Setup
-local Window = Rayfield:CreateWindow({
-Name = "Kezi HUB ( Powered By ChatGPT )",
-LoadingTitle = "Kezi Hub",
-LoadingSubtitle = "by KezSoftworks",
-Theme = 'Amethyst',
-ConfigurationSaving = {
-    Enabled = false,
-    FolderName = "KezHub",
-    FileName = "KeziHubSettings"
-}
-})
+    -- UI Setup
+    local Window = Rayfield:CreateWindow({
+        Name = "Kezi HUB ( Powered By ChatGPT )",
+        LoadingTitle = "Kezi Hub",
+        LoadingSubtitle = "by KezSoftworks",
+        Theme = 'Amethyst',
+        ConfigurationSaving = {
+            Enabled = false,
+            FolderName = "KezHub",
+            FileName = "KeziHubSettings"
+        }
+    })
 
 
 -- Tab for Stats
+    -- Load StatsTab
+    local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
 
--- Load StatsTab
-local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
+    -- Points Tracking
+    local points = 0
 
--- Points Tracking
-local points = 0
-
--- Point Label
-local pointsLabel = StatsTab:CreateParagraph({
-    Title = "Points Recieved", -- Default Title
-    Content = "Start Minigame Autofarm to display points"  -- Default message
-})
+    -- Point Label
+    local pointsLabel = StatsTab:CreateParagraph({
+        Title = "Points Recieved", -- Default Title
+        Content = "Start Minigame Autofarm to display points"  -- Default message
+    })
 
 -- Tab for Minigames
+    -- Load MinigamesTab
+    local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
 
--- Load MinigamesTab
-local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
+    -- Information
+    MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
 
--- Information
-MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
+    -- Turning off Rendering
+    local function optimizeON()
+        local objects = {
+            "Lampu Kota",
+            "LightingAmbientRevamp"
+        }
 
--- Turning off Rendering
-local function optimizeON()
-    local objects = {
-        "Lampu Kota",
-        "LightingAmbientRevamp"
-    }
+        for _, folderName in ipairs(objects) do
+            local folder = workspace:FindFirstChild(folderName)
+            if folder then
+                folder:Destroy()
+            end
+        end
 
-    for _, folderName in ipairs(objects) do
-        local folder = workspace:FindFirstChild(folderName)
-        if folder then
-            folder:Destroy()
+        local objects = {
+            "Stuff",
+            "RoadLight"
+        }
+
+        for _, folderName in ipairs(objects) do
+            local folder = workspace.Map:FindFirstChild(folderName)
+            if folder then
+                folder:Destroy()
+            end
         end
     end
 
-    local objects = {
-        "Stuff",
-        "RoadLight"
-    }
-
-    for _, folderName in ipairs(objects) do
-        local folder = workspace.Map:FindFirstChild(folderName)
-        if folder then
-            folder:Destroy()
-        end
+    -- Buy AVANZA Function
+    local function buycar()
+        local args = {
+            [1] = "Buy",
+            [2] = "2021Avanza15CVT",
+            [3] = "White",
+            [4] = "Toyota"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
     end
-end
 
--- Buy AVANZA Function
-local function buycar()
-    local args = {
-        [1] = "Buy",
-        [2] = "2021Avanza15CVT",
-        [3] = "White",
-        [4] = "Toyota"
-    }
-    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
-end
+    -- Sell AVANZA Function
+    local function sellcar()
+        local args = {
+            [1] = "Sell",
+            [2] = "2021Avanza15CVT"
+        }
+        
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
+    end    
 
--- Sell AVANZA Function
-local function sellcar()
-    local args = {
-        [1] = "Sell",
-        [2] = "2021Avanza15CVT"
-    }
-    
-    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
-end    
+    -- Minigames Config Section
+    MinigamesTab:CreateSection("Minigames AutoFarm")
 
--- Minigames Config Section
-MinigamesTab:CreateSection("Minigames AutoFarm")
+    -- Pending Loop Time
+    local pendingLoopTime = 1.5 -- Default value
+    local Input = MinigamesTab:CreateInput({
+        Name = "Pending Loop Time",
+        CurrentValue = tostring(pendingLoopTime),
+        PlaceholderText = "Input Placeholder",
+        RemoveTextAfterFocusLost = false,
+        Flag = "Input1",
+        Callback = function(Text)
+            local time = tonumber(Text)
+            if time then
+                pendingLoopTime = time
+            else
+                pendingLoopTime = 1.5
+            end
+        end,
+    })
 
--- Pending Loop Time
-local pendingLoopTime = 1.5 -- Default value
-local Input = MinigamesTab:CreateInput({
-    Name = "Pending Loop Time",
-    CurrentValue = tostring(pendingLoopTime),
-    PlaceholderText = "Input Placeholder",
-    RemoveTextAfterFocusLost = false,
-    Flag = "Input1",
-    Callback = function(Text)
-        local time = tonumber(Text)
-        if time then
-            pendingLoopTime = time
-        else
-            pendingLoopTime = 1.5
-        end
-    end,
-})
+    -- Global flags for minigame states
+    local isMiniGameWinActive = false
+    local isMiniGameLoseActive = false
 
--- Global flags for minigame states
-local isMiniGameWinActive = false
-local isMiniGameLoseActive = false
+    -- Win Account Toggle
+    MinigamesTab:CreateToggle({
+        Name = "Win Account",
+        CurrentValue = false,
+        Flag = "WinAccount",
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
 
--- Win Account Toggle
-MinigamesTab:CreateToggle({
-    Name = "Win Account",
-    CurrentValue = false,
-    Flag = "WinAccount",
-    Callback = function(Value)
-        local player = game.Players.LocalPlayer
-
-        -- Function to enter the minigame
-        local function enterMinigame(vehicle)
-            buycar()
-            local args = {
-                [1] = "Enter",
-                [2] = vehicle
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-        end
-
-        -- Function to leave the minigame
-        local function leaveMinigame(vehicle)
-            sellcar()
-            local args = {
-                [1] = "Leave",
-                [2] = vehicle
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-        end
-
-        if Value then
-            isMiniGameWinActive = true
-            optimizeON()
-            enterMinigame("2021Avanza15CVT")
-
-            -- Points Stats
-            points = points + 10
-            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-            -- Detect when the character resets
-            player.CharacterAdded:Connect(function()
-                task.wait(pendingLoopTime)
-                if isMiniGameWinActive then
-                    enterMinigame("2021Avanza15CVT")
-                    
-                    -- Points Stats
-                    points = points + 10
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                end
-            end)
-        else
-            isMiniGameWinActive = false
-            leaveMinigame("2021Avanza15CVT")
-            -- Reset Character and leave the minigame
-            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+            -- Function to enter the minigame
+            local function enterMinigame(vehicle)
+                buycar()
+                local args = {
+                    [1] = "Enter",
+                    [2] = vehicle
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
             end
 
-            -- Points Stats
-            points = 0
-            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-        end
-    end
-})
-
--- Lose Account Toggle
-MinigamesTab:CreateToggle({
-    Name = "Lose Account",
-    CurrentValue = false,
-    Flag = "LoseAccount",
-    Callback = function(Value)
-        local player = game.Players.LocalPlayer
-
-        -- Function to enter the minigame
-        local function enterMinigame(vehicle)
-            buycar()
-            local args = {
-                [1] = "Enter",
-                [2] = vehicle
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-            
-            coroutine.wrap(function()
-                -- Exit Car at Minigame
-                while isMiniGameLoseActive do
-                    local player = game.Players.LocalPlayer
-                    local vehicleName = player.Name .. "sCar"
-                    local vehicleFolder = workspace.Vehicles
-                    local vehicle = vehicleFolder:FindFirstChild(vehicleName)
-
-                    while not vehicle do
-                        task.wait(1)
-                        vehicle = vehicleFolder:FindFirstChild(vehicleName)
-                    end
-
-                    local character = player.Character or player.CharacterAdded:Wait()
-                    local humanoid = character:WaitForChild("Humanoid")
-
-                    while vehicle and vehicle.Parent do
-                        humanoid.Jump = true
-                        wait(0.5)
-                    end
-                end
-            end)()
-        end
-
-        -- Function to leave the minigame
-        local function leaveMinigame(vehicle)
-            sellcar()
-            local args = {
-                [1] = "Leave",
-                [2] = vehicle
-            }
-            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-        end
-
-        if Value then
-            isMiniGameLoseActive = true
-            optimizeON()
-            enterMinigame("2021Avanza15CVT")
-
-            -- Points Stats
-            points = points + 5
-            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-
-            -- Detect when the character resets
-            player.CharacterAdded:Connect(function()
-                task.wait(pendingLoopTime)
-                if isMiniGameLoseActive then
-                    enterMinigame("2021Avanza15CVT")
-
-                    -- Points Stats
-                    points = points + 5
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                end
-            end)
-        else
-            isMiniGameLoseActive = false
-            leaveMinigame("2021Avanza15CVT")
-
-            -- Reset Character and leave the minigame
-            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+            -- Function to leave the minigame
+            local function leaveMinigame(vehicle)
+                sellcar()
+                local args = {
+                    [1] = "Leave",
+                    [2] = vehicle
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
             end
 
-            -- Points Stats
-            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+            if Value then
+                isMiniGameWinActive = true
+                optimizeON()
+                enterMinigame("2021Avanza15CVT")
+
+                -- Points Stats
+                points = points + 10
+                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                -- Detect when the character resets
+                player.CharacterAdded:Connect(function()
+                    task.wait(pendingLoopTime)
+                    if isMiniGameWinActive then
+                        enterMinigame("2021Avanza15CVT")
+                        
+                        -- Points Stats
+                        points = points + 10
+                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                    end
+                end)
+            else
+                isMiniGameWinActive = false
+                leaveMinigame("2021Avanza15CVT")
+                -- Reset Character and leave the minigame
+                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+                end
+
+                -- Points Stats
+                points = 0
+                pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+            end
         end
-    end
-})
+    })
+
+    -- Lose Account Toggle
+    MinigamesTab:CreateToggle({
+        Name = "Lose Account",
+        CurrentValue = false,
+        Flag = "LoseAccount",
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
+
+            -- Function to enter the minigame
+            local function enterMinigame(vehicle)
+                buycar()
+                local args = {
+                    [1] = "Enter",
+                    [2] = vehicle
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+                
+                coroutine.wrap(function()
+                    -- Exit Car at Minigame
+                    while isMiniGameLoseActive do
+                        local player = game.Players.LocalPlayer
+                        local vehicleName = player.Name .. "sCar"
+                        local vehicleFolder = workspace.Vehicles
+                        local vehicle = vehicleFolder:FindFirstChild(vehicleName)
+
+                        while not vehicle do
+                            task.wait(1)
+                            vehicle = vehicleFolder:FindFirstChild(vehicleName)
+                        end
+
+                        local character = player.Character or player.CharacterAdded:Wait()
+                        local humanoid = character:WaitForChild("Humanoid")
+
+                        while vehicle and vehicle.Parent do
+                            humanoid.Jump = true
+                            wait(0.5)
+                        end
+                    end
+                end)()
+            end
+
+            -- Function to leave the minigame
+            local function leaveMinigame(vehicle)
+                sellcar()
+                local args = {
+                    [1] = "Leave",
+                    [2] = vehicle
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+            end
+
+            if Value then
+                isMiniGameLoseActive = true
+                optimizeON()
+                enterMinigame("2021Avanza15CVT")
+
+                -- Points Stats
+                points = points + 5
+                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+
+                -- Detect when the character resets
+                player.CharacterAdded:Connect(function()
+                    task.wait(pendingLoopTime)
+                    if isMiniGameLoseActive then
+                        enterMinigame("2021Avanza15CVT")
+
+                        -- Points Stats
+                        points = points + 5
+                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                    end
+                end)
+            else
+                isMiniGameLoseActive = false
+                leaveMinigame("2021Avanza15CVT")
+
+                -- Reset Character and leave the minigame
+                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+                end
+
+                -- Points Stats
+                pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+            end
+        end
+    })
 
 
 -- Tab for Misc
+    -- Load MiscTab
+    local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 
--- Load MiscTab
-local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
+    -- Box Section
+    local Section = MiscTab:CreateSection("Box")
 
--- Box Section
-local Section = MiscTab:CreateSection("Box")
+    -- Local's for Gacha
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local StarterGui = game:GetService("StarterGui")
 
--- Local's for Gacha
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local StarterGui = game:GetService("StarterGui")
+    -- Open Gacha UI
+    local Button = MiscTab:CreateButton({
+        Name = "Open Gacha UI",
+        Callback = function()
+            fireproximityprompt(workspace.Etc.NPC.BOXSHOP.ProximityPrompt)
+        end,
+    })
 
--- Open Gacha UI
-local Button = MiscTab:CreateButton({
-    Name = "Open Gacha UI",
-    Callback = function()
-        fireproximityprompt(workspace.Etc.NPC.BOXSHOP.ProximityPrompt)
-    end,
-})
+    -- Auto Gacha Section
+    local Section = MiscTab:CreateSection("Autogacha")
 
--- Auto Gacha Section
-local Section = MiscTab:CreateSection("Autogacha")
+    -- Auto Gacha Function
+    local disablegacha = false
+    local disablegacha1 = false
 
--- Auto Gacha Function
-local disablegacha = false
-local disablegacha1 = false
+    -- Minigame Gacha
+    local function startgacha()
+        if disablegacha == false then
+            while startgacha do
+                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
--- Minigame Gacha
-local function startgacha()
-    if disablegacha == false then
-        while startgacha do
-            local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+                if button then
+                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+                    -- Simulate the button's action (for example, buying a Minigame Box)
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Minigame Box"
+                    }
 
-            if button then
-                -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                -- Simulate the button's action (for example, buying a Minigame Box)
-                local actionArgs = {
-                    [1] = "Buy",
-                    [2] = "Minigame Box"
-                }
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
 
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
-            end
+                task.wait(.1)
 
-            task.wait(.1)
-
-            if disablegacha then
-                break
-            end
-        end
-    end
-end
-
--- Limited Gacha
-local function startgacha1()
-    if disablegacha1 == false then
-        while startgacha1 do
-            local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
-
-            if button then
-                -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                -- Simulate the button's action (for example, buying a Minigame Box)
-                local actionArgs = {
-                    [1] = "Buy",
-                    [2] = "Limited Box"
-                }
-
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
-            end
-
-            task.wait(.1)
-
-            if disablegacha1 then
-                break
+                if disablegacha then
+                    break
+                end
             end
         end
     end
-end
 
--- Gamepass Gacha
-local function startgacha2()
-    if disablegacha1 == false then
-        while startgacha2 do
-            local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+    -- Limited Gacha
+    local function startgacha1()
+        if disablegacha1 == false then
+            while startgacha1 do
+                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
-            if button then
-                -- Instead of firing MouseButton1Click, directly trigger the action it performs:
-                -- Simulate the button's action (for example, buying a Minigame Box)
-                local actionArgs = {
-                    [1] = "Buy",
-                    [2] = "Gamepass Box"
-                }
+                if button then
+                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+                    -- Simulate the button's action (for example, buying a Minigame Box)
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Limited Box"
+                    }
 
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
-            end
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
 
-            task.wait(.1)
+                task.wait(.1)
 
-            if disablegacha2 then
-                break
+                if disablegacha1 then
+                    break
+                end
             end
         end
     end
-end
 
--- Auto Gacha Minigames Toggle
-local Toggle = MiscTab:CreateToggle({
-    Name = "AutoGacha Minigames",
-    CurrentValue = false,
-    Flag = "Toggle1",
-    Callback = function(Value)
-        if Value then
-            disablegacha = false
-            startgacha()
-        else
-            disablegacha = true
+    -- Gamepass Gacha
+    local function startgacha2()
+        if disablegacha1 == false then
+            while startgacha2 do
+                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+                if button then
+                    -- Instead of firing MouseButton1Click, directly trigger the action it performs:
+                    -- Simulate the button's action (for example, buying a Minigame Box)
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Gamepass Box"
+                    }
+
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
+
+                task.wait(.1)
+
+                if disablegacha2 then
+                    break
+                end
+            end
         end
-    end,
-})
+    end
 
--- Auto Gacha Limited Toggle
-local Toggle = MiscTab:CreateToggle({
-    Name = "AutoGacha Limited Box",
-    CurrentValue = false,
-    Flag = "Toggle1",
-    Callback = function(Value)
-        if Value then
-            disablegacha1 = false
-            startgacha1()
-        else
-            disablegacha1 = true
-        end
-    end,
-})
+    -- Auto Gacha Minigames Toggle
+    local Toggle = MiscTab:CreateToggle({
+        Name = "AutoGacha Minigames",
+        CurrentValue = false,
+        Flag = "Toggle1",
+        Callback = function(Value)
+            if Value then
+                disablegacha = false
+                startgacha()
+            else
+                disablegacha = true
+            end
+        end,
+    })
 
--- Auto Gacha Gamepass Toggle
-local Toggle = MiscTab:CreateToggle({
-    Name = "AutoGacha Gamepass Box",
-    CurrentValue = false,
-    Flag = "Toggle1",
-    Callback = function(Value)
-        if Value then
-            disablegacha2 = false
-            startgacha2()
-        else
-            disablegacha2 = true
-        end
-    end,
-})
+    -- Auto Gacha Limited Toggle
+    local Toggle = MiscTab:CreateToggle({
+        Name = "AutoGacha Limited Box",
+        CurrentValue = false,
+        Flag = "Toggle1",
+        Callback = function(Value)
+            if Value then
+                disablegacha1 = false
+                startgacha1()
+            else
+                disablegacha1 = true
+            end
+        end,
+    })
 
--- Dealers Section
-local Section = MiscTab:CreateSection("Car Dealers")
+    -- Auto Gacha Gamepass Toggle
+    local Toggle = MiscTab:CreateToggle({
+        Name = "AutoGacha Gamepass Box",
+        CurrentValue = false,
+        Flag = "Toggle1",
+        Callback = function(Value)
+            if Value then
+                disablegacha2 = false
+                startgacha2()
+            else
+                disablegacha2 = true
+            end
+        end,
+    })
 
--- Dealers
-local Dropdown = MiscTab:CreateDropdown({
-    Name = "Open Dealers",
-    Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
-    CurrentOption = {"None"},
-    MultipleOptions = false,
-    Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-    Callback = function(Options)
-        -- Get the selected option (dealernames)
-        local selectedDealer = Options[1]  -- Only one option is selected, so we get the first element
-        local dealership = workspace.Etc.Dealership
-        
-        -- Verify if the selected dealer exists in the dealership folder (use 'FindFirstChild' for safety)
-        local dealerFolder = dealership:FindFirstChild(selectedDealer)
-        
-        -- Check if the dealer exists and if it has a 'Prompt' property
-        if dealerFolder and dealerFolder:FindFirstChild("Prompt") then
-            -- Trigger the proximity prompt for the specific dealer
-            fireproximityprompt(dealerFolder.Prompt)
-        else
-            Rayfield:Notify({
-                Title = "Dealership",
-                Content = "The Dealer u choose is not available or located in another province",
-                Duration = 5,
-                Image = "rewind",
-            })
-        end
-    end,
-})
+    -- Dealers Section
+    local Section = MiscTab:CreateSection("Car Dealers")
+
+    -- Dealers
+    local Dropdown = MiscTab:CreateDropdown({
+        Name = "Open Dealers",
+        Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
+        CurrentOption = {"None"},
+        MultipleOptions = false,
+        Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+        Callback = function(Options)
+            -- Get the selected option (dealernames)
+            local selectedDealer = Options[1]  -- Only one option is selected, so we get the first element
+            local dealership = workspace.Etc.Dealership
+            
+            -- Verify if the selected dealer exists in the dealership folder (use 'FindFirstChild' for safety)
+            local dealerFolder = dealership:FindFirstChild(selectedDealer)
+            
+            -- Check if the dealer exists and if it has a 'Prompt' property
+            if dealerFolder and dealerFolder:FindFirstChild("Prompt") then
+                -- Trigger the proximity prompt for the specific dealer
+                fireproximityprompt(dealerFolder.Prompt)
+            else
+                Rayfield:Notify({
+                    Title = "Dealership",
+                    Content = "The Dealer u choose is not available or located in another province",
+                    Duration = 5,
+                    Image = "rewind",
+                })
+            end
+        end,
+    })
 
 
 -- Tab for Settings
+    -- Load SettingsTab
+    local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
 
--- Load SettingsTab
-local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
+    -- Delete UI Section
+    local Section = SettingsTab:CreateSection("Disable Hub")
 
--- Delete UI Section
-local Section = SettingsTab:CreateSection("Disable Hub")
+    -- Disable All Loops
+    local function disableloops()
+        isMiniGameWinActive = false
+        isMiniGameLoseActive = false
+        disablegacha = true
+        disablegacha1 = true
+        disablegacha2 = true
+        bugnotif = false
+    end
 
--- Disable All Loops
-local function disableloops()
-    isMiniGameWinActive = false
-    isMiniGameLoseActive = false
-    disablegacha = true
-    disablegacha1 = true
-    disablegacha2 = true
-    bugnotif = false
-end
-
--- Destroy Button
-local Button = SettingsTab:CreateButton({
-    Name = "Turn OFF Kezi HUB",
-    Callback = function()
-        disableloops()
-        Rayfield:Destroy()
-    end,
-})
+    -- Destroy Button
+    local Button = SettingsTab:CreateButton({
+        Name = "Turn OFF Kezi HUB",
+        Callback = function()
+            disableloops()
+            Rayfield:Destroy()
+        end,
+    })
 
 -- Disable UI Reset
-local ScreenGui = Window:GetGui()
-ScreenGui.ResetOnSpawn = false
+    local ScreenGui = Window:GetGui()
+    ScreenGui.ResetOnSpawn = false
