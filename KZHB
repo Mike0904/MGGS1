@@ -1,7 +1,9 @@
+-- Rayfield UI Setup
+
 -- Anti-AFK Script
 game:GetService("Players").LocalPlayer.Idled:Connect(function()
-    game:GetService("VirtualUser"):CaptureController()
-    game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+game:GetService("VirtualUser"):CaptureController()
+game:GetService("VirtualUser"):ClickButton2(Vector2.new())
 end)
 
 -- Rayfield Library Load
@@ -11,29 +13,50 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local bugnotif = true
 -- Notification
 while bugnotif do
-    Rayfield:Notify({
-        Title = "Is there any bugs?",
-        Content = "Consider reporting any bugs in KeziHub Discord Server",
-        Duration = 6.5,  -- Duration of the notification
-        Image = 4483362458,  -- Icon ID for the notification
-    })
-    task.wait(90)
+Rayfield:Notify({
+    Title = "Is there any bugs?",
+    Content = "Consider reporting any bugs in KeziHub Discord Server",
+    Duration = 6.5,  -- Duration of the notification
+    Image = 4483362458,  -- Icon ID for the notification
+})
+task.wait(90)
 end
-
-
 
 -- UI Setup
 local Window = Rayfield:CreateWindow({
-    Name = "Kezi HUB ( Powered By ChatGPT )",
-    LoadingTitle = "Kezi Hub",
-    LoadingSubtitle = "by KezSoftworks",
-    Theme = 'Amethyst',
-    ConfigurationSaving = {
-        Enabled = false,
-        FolderName = "KezHub",
-        FileName = "KeziHubSettings"
-    }
+Name = "Kezi HUB ( Powered By ChatGPT )",
+LoadingTitle = "Kezi Hub",
+LoadingSubtitle = "by KezSoftworks",
+Theme = 'Amethyst',
+ConfigurationSaving = {
+    Enabled = false,
+    FolderName = "KezHub",
+    FileName = "KeziHubSettings"
+}
 })
+
+
+-- Tab for Stats
+
+-- Load StatsTab
+local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
+
+-- Points Tracking
+local points = 0
+
+-- Point Label
+local pointsLabel = StatsTab:CreateParagraph({
+    Title = "Points Recieved", -- Default Title
+    Content = "Start Minigame Autofarm to display points"  -- Default message
+})
+
+-- Tab for Minigames
+
+-- Load MinigamesTab
+local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
+
+-- Information
+MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
 
 -- Turning off Rendering
 local function optimizeON()
@@ -61,24 +84,6 @@ local function optimizeON()
         end
     end
 end
-
--- Tab for Stats
-local StatsTab = Window:CreateTab("Stats", 4483362458) -- Title and icon
-
--- Points Tracking
-local points = 0
-
--- Point Label
-local pointsLabel = StatsTab:CreateParagraph({
-    Title = "Points Recieved", -- Default Title
-    Content = "Start Minigame Autofarm to display points"  -- Default message
-})
-
--- Tab for Minigames
-local MinigamesTab = Window:CreateTab("Minigames", 4483362458)
-
--- Information
-MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
 
 -- Buy AVANZA Function
 local function buycar()
@@ -276,6 +281,8 @@ MinigamesTab:CreateToggle({
 
 
 -- Tab for Misc
+
+-- Load MiscTab
 local MiscTab = Window:CreateTab("Misc", 4483362458) -- Title, Image
 
 -- Box Section
@@ -458,6 +465,8 @@ local Dropdown = MiscTab:CreateDropdown({
 
 
 -- Tab for Settings
+
+-- Load SettingsTab
 local SettingsTab = Window:CreateTab("Settings", 4483362458) -- Title, Image
 
 -- Delete UI Section
@@ -482,6 +491,6 @@ local Button = SettingsTab:CreateButton({
     end,
 })
 
--- Ensure UI persists on character reset
+-- Disable UI Reset
 local ScreenGui = Window:GetGui()
 ScreenGui.ResetOnSpawn = false
