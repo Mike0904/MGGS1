@@ -6,7 +6,7 @@
     end)
     
     -- Rayfield Library Load
-    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftwareLtd/Rayfield/main/source.lua'))()
+    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/RFFLD'))()
 
     -- UI Setup
     local Window = Rayfield:CreateWindow({
@@ -28,16 +28,19 @@
                 Title = "Is there any bugs?",
                 Content = "Consider reporting any bugs in KeziHub Discord Server",
                 Duration = 6.5,
-                Image = megaphone,
             })
             task.wait(90)
         end
     end)()
 
+
 -- Tab for Stats
     -- Load StatsTab
     local StatsTab = Window:CreateTab("Stats")
 
+    -- Minigames Info Section
+    StatsTab:CreateSection("Minigames Stats")
+    
     -- Points Tracking
     local points = 0
 
@@ -48,38 +51,11 @@
     })
 
 -- Tab for Minigames
-    -- Load MinigamesTab
+    -- Load Minigames Tab
     local MinigamesTab = Window:CreateTab("Minigames")
 
     -- Information
-    MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature. Use 1 Main Account and 5 Dummy Accounts."})
-
-    -- Turning off Rendering
-    local function optimizeON()
-        local objects = {
-            "Lampu Kota",
-            "LightingAmbientRevamp"
-        }
-
-        for _, folderName in ipairs(objects) do
-            local folder = workspace:FindFirstChild(folderName)
-            if folder then
-                folder:Destroy()
-            end
-        end
-
-        local objects = {
-            "Stuff",
-            "RoadLight"
-        }
-
-        for _, folderName in ipairs(objects) do
-            local folder = workspace.Map:FindFirstChild(folderName)
-            if folder then
-                folder:Destroy()
-            end
-        end
-    end
+    MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature."})
 
     -- Buy AVANZA Function
     local function buycar()
@@ -98,7 +74,6 @@
             [1] = "Sell",
             [2] = "2021Avanza15CVT"
         }
-        
         game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteFunctions"):WaitForChild("Dealership"):InvokeServer(unpack(args))
     end    
 
@@ -123,21 +98,66 @@
         end,
     })
 
-    -- Global flags for minigame states
-    local isMiniGameWinActive = false
-    local isMiniGameLoseActive = false
+    local optionWin = false
+    local optionLose = false
+    -- Win / Lose Selection
+    local Selection = MinigamesTab:CreateDropdown({
+        Name = "Select Win / Lose",
+        Options = {"Win" , "Lose"},
+        CurrentOption = "None",
+        MultipleOptions = false,
+        Flag = "Dropdown1",
+        Callback = function(Options)
+            local SelectedAcc = Options[1]
 
-    -- Win Account Toggle
+            if SelectedAcc == "Win" then
+                optionWin = true
+                optionLose = false
+            elseif SelectedAcc == "Lose" then
+                optionWin = false
+                optionLose = true
+            end
+        end,
+    })
+
+    -- Start Minigame Toggle
     MinigamesTab:CreateToggle({
-        Name = "Win Account",
+        Name = "Start Minigame",
         CurrentValue = false,
-        Flag = "WinAccount",
+        Flag = "Toggle1",
         Callback = function(Value)
+            -- Turning off Rendering
+            local function optimizeON()
+                -- Define all objects to be destroyed in one table
+                local objects = {
+                    "Lampu Kota",
+                    "LightingAmbientRevamp",
+                    "Stuff",
+                    "RoadLight"
+                }
+            
+                -- Loop through all object names in the objects table
+                for _, folderName in ipairs(objects) do
+                    local folder = workspace:FindFirstChild(folderName)
+                    local folder1 = workspace.Map:FindFirstChild(folderName)  -- Make sure folder1 is checked here
+            
+                    -- Destroy folder if it exists in either location
+                    if folder then
+                        folder:Destroy()
+                    end
+                    if folder1 then
+                        folder1:Destroy()
+                    end
+                end
+            end            
+
+            -- Global flags for Minigame States
+            local isMiniGameWinActive = false
+            local isMiniGameLoseActive = false
             local player = game.Players.LocalPlayer
 
             -- Function to enter the minigame
             local function enterMinigame(vehicle)
-                buycar()
                 local args = {
                     [1] = "Enter",
                     [2] = vehicle
@@ -155,57 +175,7 @@
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
             end
 
-            if Value then
-                isMiniGameWinActive = true
-                optimizeON()
-                enterMinigame("2021Avanza15CVT")
-
-                -- Points Stats
-                points = points + 10
-                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                -- Detect when the character resets
-                player.CharacterAdded:Connect(function()
-                    task.wait(pendingLoopTime)
-                    if isMiniGameWinActive then
-                        enterMinigame("2021Avanza15CVT")
-                        
-                        -- Points Stats
-                        points = points + 10
-                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                    end
-                end)
-            else
-                isMiniGameWinActive = false
-                leaveMinigame("2021Avanza15CVT")
-                -- Reset Character and leave the minigame
-                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
-                end
-
-                -- Points Stats
-                points = 0
-                pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-            end
-        end
-    })
-
-    -- Lose Account Toggle
-    MinigamesTab:CreateToggle({
-        Name = "Lose Account",
-        CurrentValue = false,
-        Flag = "LoseAccount",
-        Callback = function(Value)
-            local player = game.Players.LocalPlayer
-
-            -- Function to enter the minigame
-            local function enterMinigame(vehicle)
-                buycar()
-                local args = {
-                    [1] = "Enter",
-                    [2] = vehicle
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-                
+            local function Jump()
                 coroutine.wrap(function()
                     -- Exit Car at Minigame
                     while isMiniGameLoseActive do
@@ -213,15 +183,15 @@
                         local vehicleName = player.Name .. "sCar"
                         local vehicleFolder = workspace.Vehicles
                         local vehicle = vehicleFolder:FindFirstChild(vehicleName)
-
+            
                         while not vehicle do
                             task.wait(1)
                             vehicle = vehicleFolder:FindFirstChild(vehicleName)
                         end
-
+            
                         local character = player.Character or player.CharacterAdded:Wait()
                         local humanoid = character:WaitForChild("Humanoid")
-
+            
                         while vehicle and vehicle.Parent do
                             humanoid.Jump = true
                             wait(0.5)
@@ -230,49 +200,74 @@
                 end)()
             end
 
-            -- Function to leave the minigame
-            local function leaveMinigame(vehicle)
-                sellcar()
-                local args = {
-                    [1] = "Leave",
-                    [2] = vehicle
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-            end
-
+            -- Callback
             if Value then
-                isMiniGameLoseActive = true
-                optimizeON()
-                enterMinigame("2021Avanza15CVT")
+                if optionWin then
+                    isMiniGameWinActive = true
+                    isMiniGameLoseActive = false
+                    buycar()
+                    optimizeON()
+                    enterMinigame("2021Avanza15CVT")
 
-                -- Points Stats
-                points = points + 5
-                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                    -- Points Stats
+                    points = points + 10
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
 
-                -- Detect when the character resets
-                player.CharacterAdded:Connect(function()
-                    task.wait(pendingLoopTime)
-                    if isMiniGameLoseActive then
-                        enterMinigame("2021Avanza15CVT")
+                    -- Detect when the character resets
+                    player.CharacterAdded:Connect(function()
+                        task.wait(pendingLoopTime)
+                        if isMiniGameWinActive then
+                            -- Points Stats
+                            points = points + 10
+                            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                            
+                            enterMinigame("2021Avanza15CVT")
+                        end
+                    end)
 
-                        -- Points Stats
-                        points = points + 5
-                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                    end
-                end)
-            else
-                isMiniGameLoseActive = false
-                leaveMinigame("2021Avanza15CVT")
+                elseif optionLose then
+                    isMiniGameLoseActive = true
+                    isMiniGameWinActive = false
+                    buycar()
+                    optimizeON()
+                    enterMinigame("2021Avanza15CVT")
+                    Jump()
 
-                -- Reset Character and leave the minigame
-                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+                    -- Points Stats
+                    points = points + 5
+                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+
+                    -- Detect when the character resets
+                    player.CharacterAdded:Connect(function()
+                        task.wait(pendingLoopTime)
+                        if isMiniGameLoseActive then
+                            -- Points Stats
+                            points = points + 5
+                            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                            
+                            enterMinigame("2021Avanza15CVT")
+                            Jump()
+                        end
+                    end)
                 end
+            else
+                -- Stop the minigame and reset variables if the toggle is turned off
+                if optionWin or optionLose then
+                    isMiniGameWinActive = false
+                    isMiniGameLoseActive = false
+                    leaveMinigame("2021Avanza15CVT")
 
-                -- Points Stats
-                pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+                    -- Points Stats
+                    points = 0
+                    pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+
+                    -- Reset Character and leave the minigame
+                    if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                        player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+                    end
+                end
             end
-        end
+        end,
     })
 
 
@@ -281,14 +276,14 @@
     local MiscTab = Window:CreateTab("Misc")
 
     -- Box Section
-    local Section = MiscTab:CreateSection("Box")
+    MiscTab:CreateSection("Box")
 
     -- Local's for Gacha
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local StarterGui = game:GetService("StarterGui")
 
     -- Open Gacha UI
-    local Button = MiscTab:CreateButton({
+    MiscTab:CreateButton({
         Name = "Open Gacha UI",
         Callback = function()
             fireproximityprompt(workspace.Etc.NPC.BOXSHOP.ProximityPrompt)
@@ -375,7 +370,7 @@
     end
 
     -- Auto Gacha Minigames Toggle
-    local Toggle = MiscTab:CreateToggle({
+    MiscTab:CreateToggle({
         Name = "AutoGacha Minigames",
         CurrentValue = false,
         Flag = "Toggle1",
@@ -390,7 +385,7 @@
     })
 
     -- Auto Gacha Limited Toggle
-    local Toggle = MiscTab:CreateToggle({
+    MiscTab:CreateToggle({
         Name = "AutoGacha Limited Box",
         CurrentValue = false,
         Flag = "Toggle1",
@@ -405,7 +400,7 @@
     })
 
     -- Auto Gacha Gamepass Toggle
-    local Toggle = MiscTab:CreateToggle({
+    MiscTab:CreateToggle({
         Name = "AutoGacha Gamepass Box",
         CurrentValue = false,
         Flag = "Toggle1",
@@ -420,10 +415,10 @@
     })
 
     -- Dealers Section
-    local Section = MiscTab:CreateSection("Car Dealers")
+    MiscTab:CreateSection("Car Dealers")
 
     -- Dealers
-    local Dropdown = MiscTab:CreateDropdown({
+    MiscTab:CreateDropdown({
         Name = "Open Dealers",
         Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
         CurrentOption = {"None"},
@@ -453,27 +448,151 @@
     -- Load SettingsTab
     local SettingsTab = Window:CreateTab("Settings")
 
+    -- Auto Rejoiner Section
+    SettingsTab:CreateSection("Auto Rejoiner")
+
+    -- Map Variables
+    local SelectJakarta = false
+    local SelectJawaBarat = false
+    local SelectJawaTengah = false
+
+    -- Map Selection
+    local Dropdown = Tab:CreateDropdown({
+        Name = "Dropdown Example",
+        Options = {"Jakarta","JawaBarat","JawaTengah"},
+        CurrentOption = {"Option 1"},
+        MultipleOptions = false,
+        Flag = "Dropdown1",
+        Callback = function(Options)
+            local selectedMap = Options[1]
+            if selectedMap == "Jakarta" then
+                SelectJakarta = true
+                SelectJawaBarat = false
+                SelectJawaTengah = false
+            
+            elseif selectedMap == "JawaBarat" then
+                SelectJakarta = false
+                SelectJawaBarat = true
+                SelectJawaTengah = false
+            
+            elseif selectedMap == "JawaTengah" then
+                SelectJakarta = false
+                SelectJawaBarat = false
+                SelectJawaTengah = true
+            end
+        end,
+    })
+
+    -- Rejoin Button
+    SettingsTab:CreateButton({
+        Name = "Rejoin Private Server",
+        Callback = function(Value)
+            local Players = game:GetService("Players")
+            local TeleportService = game:GetService("TeleportService")
+            local TeleportCheck = false
+            
+            -- Executor's Support
+            queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+            httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+            -- Store current PlaceId and JobId
+            local PlaceId, JobId = game.PlaceId, game.JobId
+
+            -- Connecting to the OnTeleport event
+            if SelectJakarta then
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if not TeleportCheck and queueteleport then
+                        TeleportCheck = true
+
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport'))()
+                            local args = {
+                                [1] = "Join",
+                                [2] = "45e0e7545845660",  -- The private server ID
+                                [3] = "Jakarta"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                        ]])
+                    end
+                end)
+
+            elseif SelectJawaBarat then
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if not TeleportCheck and queueteleport then
+                        TeleportCheck = true
+
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport'))()
+                            local args = {
+                                [1] = "Join",
+                                [2] = "45e0e7545845660",  -- The private server ID
+                                [3] = "JawaBarat"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                        ]])
+                    end
+                end)
+
+            elseif SelectJawaTengah then
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if not TeleportCheck and queueteleport then
+                        TeleportCheck = true
+
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport'))()
+                            local args = {
+                                [1] = "Join",
+                                [2] = "45e0e7545845660",  -- The private server ID
+                                [3] = "JawaTengah"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                        ]])
+                    end
+                end)
+            end
+            
+            -- Teleport to the desired place (Jakarta)
+            TeleportService:Teleport(6911148748)
+        end,
+    })
+
     -- Delete UI Section
-    local Section = SettingsTab:CreateSection("Disable Hub")
+    SettingsTab:CreateSection("Disable Hub")
 
     -- Disable All Loops
     local function disableloops()
+        Window = false
+        optionWin = false
+        optionLose = false
         isMiniGameWinActive = false
         isMiniGameLoseActive = false
         disablegacha = true
         disablegacha1 = true
         disablegacha2 = true
-        Window = false
+        SelectJakarta = false
+        SelectJawaBarat = false
+        SelectJawaTengah = false
     end
 
     -- Destroy Button
-    local Button = SettingsTab:CreateButton({
-        Name = "Turn OFF Kezi HUB",
+    SettingsTab:CreateButton({
+        Name = "Disable Script",
         Callback = function()
+            Rayfield:Notify({
+                Title = "Disable Script",
+                Content = "Thank you for using Kezi Hub",
+                Duration = 5,
+                Image = "rewind",
+            })
+
             disableloops()
             Rayfield:Destroy()
         end,
     })
+
 
 -- Disable UI Reset
     local ScreenGui = Window:GetGui()
