@@ -457,7 +457,7 @@
     local SelectJawaTengah = false
 
     -- Map Selection
-    local Dropdown = Tab:CreateDropdown({
+    SettingsTab:CreateDropdown({
         Name = "Dropdown Example",
         Options = {"Jakarta","JawaBarat","JawaTengah"},
         CurrentOption = {"Option 1"},
