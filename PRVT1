@@ -465,6 +465,7 @@
         Flag = "Dropdown1",
         Callback = function(Options)
             local selectedMap = Options[1]
+
             if selectedMap == "Jakarta" then
                 SelectJakarta = true
                 SelectJawaBarat = false
@@ -500,13 +501,12 @@
 
             -- Connecting to the OnTeleport event
             if SelectJakarta then
+                alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        alrSelectMap = true
-
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueuePRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -518,13 +518,12 @@
                 end)
 
             elseif SelectJawaBarat then
+                alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        alrSelectMap = true
-
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueuePRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -536,13 +535,13 @@
                 end)
 
             elseif SelectJawaTengah then
+                alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        alrSelectMap = true
 
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueuePRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
