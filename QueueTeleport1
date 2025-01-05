@@ -11,7 +11,6 @@ local PlaceId, JobId = game.PlaceId, game.JobId
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if not TeleportCheck and queueteleport then
         TeleportCheck = true
-
         -- Queue the PrivateServer join and script execution
         queueteleport([[
             getgenv().performanceMode = true
