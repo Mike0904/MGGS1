@@ -14,7 +14,7 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         -- Queue the PrivateServer join and script execution
         queueteleport([[
             getgenv().performanceMode = true
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/KZHUB'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/KZZH'))()
         ]])
     end
 end)
