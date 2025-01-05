@@ -460,7 +460,7 @@
     SettingsTab:CreateDropdown({
         Name = "Dropdown Example",
         Options = {"Jakarta","JawaBarat","JawaTengah"},
-        CurrentOption = {"Option 1"},
+        CurrentOption = {"None"},
         MultipleOptions = false,
         Flag = "Dropdown1",
         Callback = function(Options)
