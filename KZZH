@@ -506,7 +506,7 @@
 
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport1'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -542,7 +542,7 @@
 
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTeleport1'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTPP'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -554,8 +554,22 @@
                 end)
             end
             
-            -- Teleport to the desired place (Jakarta)
-            TeleportService:Teleport(6911148748)
+            if SelectJakarta or SelectJawaBarat or SelectJawaTengah then
+                -- Teleport to the desired place (Jakarta)
+                TeleportService:Teleport(6911148748)
+            else
+                coroutine.wrap(function()
+                    Rayfield:Notify({
+                        Title = "Auto Rejoiner",
+                        Content = "Select Map before Auto Rejoin",
+                        Duration = 3,
+                        Image = "rewind",
+                    })
+                end)()
+
+                task.wait(3)
+                return
+            end
         end,
     })
 
