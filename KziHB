@@ -4,20 +4,22 @@
         game:GetService("VirtualUser"):CaptureController()
         game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     end)
+
+    local CurrentVersion = 1.0
     
     -- Rayfield Library Load
-    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/RFFLD'))()
+    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
 
     -- UI Setup
     local Window = Rayfield:CreateWindow({
-        Name = "Kezi HUB ( Powered By ChatGPT )",
+        Name = "Kezi HUB ( Powered By ChatGPT ) V" ..CurrentVersion,
         LoadingTitle = "Kezi Hub",
         LoadingSubtitle = "by KezSoftworks",
         Theme = 'Amethyst',
         ConfigurationSaving = {
             Enabled = false,
-            FolderName = "KezHub",
-            FileName = "KeziHubSettings"
+            FolderName = "KeziHub",
+            FileName = "KeziHubConfig"
         }
     })
 
@@ -32,6 +34,27 @@
             task.wait(90)
         end
     end)()
+
+    -- Re-ExecuteScriptWhenTeleport
+    local Players = game:GetService("Players")
+    local TeleportService = game:GetService("TeleportService")
+    
+    -- Executor's Support
+    queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+    -- Store current PlaceId and JobId
+    local PlaceId, JobId = game.PlaceId, game.JobId
+
+    -- Connecting to the OnTeleport event
+        Players.LocalPlayer.OnTeleport:Connect(function(State)
+            if queueteleport then
+                -- Primary Script
+                queueteleport([[
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/KziHB'))()
+                ]])
+            end
+        end)
 
 
 -- Tab for Stats
@@ -50,12 +73,14 @@
         Content = "Start Minigame Autofarm to display points"
     })
 
+
 -- Tab for Minigames
     -- Load Minigames Tab
     local MinigamesTab = Window:CreateTab("Minigames")
 
     -- Information
-    MinigamesTab:CreateParagraph({Title = "Information", Content = "Required 6 Instances to use this feature."})
+    MinigamesTab:CreateSection("Minigames Information")
+    MinigamesTab:CreateParagraph({Title = "Required Information", Content = "Required 6 Instances to use this feature."})
 
     -- Buy AVANZA Function
     local function buycar()
@@ -87,7 +112,7 @@
         CurrentValue = tostring(pendingLoopTime),
         PlaceholderText = "Input Placeholder",
         RemoveTextAfterFocusLost = false,
-        Flag = "Input1",
+        Flag = "Input PendingLoopTime",
         Callback = function(Text)
             local time = tonumber(Text)
             if time then
@@ -98,15 +123,15 @@
         end,
     })
 
+    -- Win / Lose Selection
     local optionWin = false
     local optionLose = false
-    -- Win / Lose Selection
     local Selection = MinigamesTab:CreateDropdown({
         Name = "Select Win / Lose",
         Options = {"Win" , "Lose"},
         CurrentOption = "None",
         MultipleOptions = false,
-        Flag = "Dropdown1",
+        Flag = "",
         Callback = function(Options)
             local SelectedAcc = Options[1]
 
@@ -124,11 +149,10 @@
     MinigamesTab:CreateToggle({
         Name = "Start Minigame",
         CurrentValue = false,
-        Flag = "Toggle1",
+        Flag = "",
         Callback = function(Value)
             -- Turning off Rendering
             local function optimizeON()
-                -- Define all objects to be destroyed in one table
                 local objects = {
                     "Lampu Kota",
                     "LightingAmbientRevamp",
@@ -136,7 +160,6 @@
                     "RoadLight"
                 }
             
-                -- Loop through all object names in the objects table
                 for _, folderName in ipairs(objects) do
                     local folder = workspace:FindFirstChild(folderName)
                     local folder1 = workspace.Map:FindFirstChild(folderName)  -- Make sure folder1 is checked here
@@ -151,7 +174,7 @@
                 end
             end            
 
-            -- Global flags for Minigame States
+            -- Global Variables for Minigame States
             local isMiniGameWinActive = false
             local isMiniGameLoseActive = false
             local player = game.Players.LocalPlayer
@@ -200,7 +223,7 @@
                 end)()
             end
 
-            -- Callback
+            -- Minigame AutoFarm Callback
             if Value then
                 if optionWin then
                     isMiniGameWinActive = true
@@ -265,10 +288,89 @@
                     if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
                         player.Character:FindFirstChildOfClass("Humanoid").Health = 0
                     end
+                    
+                    -- Notify that Minigame AutoFarm has stopped
+                    coroutine.wrap(function()
+                        Rayfield:Notify({
+                            Title = "Minigames AutoFarm",
+                            Content = "Minigames AutoFarm is Disabled",
+                            Duration = 5,
+                            Image = "rewind",
+                        })
+                    end)
                 end
             end
         end,
     })
+
+    -- Minigames Security Section
+    MinigamesTab:CreateSection("Minigames Security Bypass")
+
+    local Value = true
+    -- Anti Staff
+    MinigamesTab:CreateToggle({
+        Name = "Anti Staff",
+        CurrentValue = true,
+        Flag = "Toggle AntiStaff",
+        Callback = function(AntiStaffValue)
+            Value = AntiStaffValue
+        end,
+    })
+    
+    local function antiStaff()
+        coroutine.wrap(function()
+            local DevRank = {
+                "Developer",
+                "HeadDeveloper",
+                "OCDID",
+                "Owner",
+                "Staff"
+            }
+        
+            local ReplicatedStorage = game:GetService("ReplicatedStorage")
+            local Players = game:GetService("Players")
+        
+            for _, rankName in ipairs(DevRank) do
+                local folder = ReplicatedStorage.Rank:FindFirstChild(rankName)
+                
+                if folder then
+                    for _, child in ipairs(folder:GetChildren()) do
+                        if child:IsA("IntValue") then
+                            local staffUserId = tonumber(child.Name)
+        
+                            if staffUserId then
+                                for _, player in ipairs(Players:GetPlayers()) do
+                                    if player.UserId == staffUserId then
+                                        game.Players.LocalPlayer:Kick("Staff Detected | KeziHub Security Notification")
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+    end
+    
+    -- Run AntiStaff Function
+    if Value then
+        print("AntiStaff Executed, you are protected by KeziHub")
+        coroutine.wrap(function()
+            while Value do
+                antiStaff()
+                task.wait(5)
+            end
+        end)()
+    else
+        coroutine.wrap(function()
+            Rayfield:Notify({
+                Title = "Anti Staff",
+                Content = "Anti Staff is Disabled, you are not protected by KeziHub",
+                Duration = 5,
+                Image = "rewind",
+            })
+        end)
+    end
 
 
 -- Tab for Misc
@@ -373,7 +475,7 @@
     MiscTab:CreateToggle({
         Name = "AutoGacha Minigames",
         CurrentValue = false,
-        Flag = "Toggle1",
+        Flag = "",
         Callback = function(Value)
             if Value then
                 disablegacha = false
@@ -388,7 +490,7 @@
     MiscTab:CreateToggle({
         Name = "AutoGacha Limited Box",
         CurrentValue = false,
-        Flag = "Toggle1",
+        Flag = "",
         Callback = function(Value)
             if Value then
                 disablegacha1 = false
@@ -403,7 +505,7 @@
     MiscTab:CreateToggle({
         Name = "AutoGacha Gamepass Box",
         CurrentValue = false,
-        Flag = "Toggle1",
+        Flag = "",
         Callback = function(Value)
             if Value then
                 disablegacha2 = false
@@ -423,7 +525,7 @@
         Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
         CurrentOption = {"None"},
         MultipleOptions = false,
-        Flag = "Dropdown1",
+        Flag = "",
         Callback = function(Options)
             local selectedDealer = Options[1]
             local dealership = workspace.Etc.Dealership
@@ -458,11 +560,11 @@
 
     -- Map Selection
     SettingsTab:CreateDropdown({
-        Name = "Dropdown Example",
+        Name = "Select Map",
         Options = {"Jakarta","JawaBarat","JawaTengah"},
         CurrentOption = {"None"},
         MultipleOptions = false,
-        Flag = "Dropdown1",
+        Flag = "Dropdown SelectMap",
         Callback = function(Options)
             local selectedMap = Options[1]
 
@@ -506,7 +608,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -523,7 +625,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -541,7 +643,7 @@
 
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QPRVT'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -602,11 +704,12 @@
             })
 
             disableloops()
+            task.wait(5)
             Rayfield:Destroy()
         end,
     })
 
 
 -- Disable UI Reset
-    local ScreenGui = Window:GetGui()
+    local ScreenGui = Window
     ScreenGui.ResetOnSpawn = false
