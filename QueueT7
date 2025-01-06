@@ -15,7 +15,7 @@ local TeleportCheck = false
             -- Queue the PrivateServer join and script execution
             queueteleport([[
                 getgenv().performanceMode = true
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/KziHB'))()
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
             ]])
         end
     end)
