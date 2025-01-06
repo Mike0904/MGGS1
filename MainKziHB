@@ -6,6 +6,7 @@
     end)
 
     local CurrentVersion = 1.0
+    local reExecuteScript = true
     
     -- Rayfield Library Load
     local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
@@ -17,7 +18,7 @@
         LoadingSubtitle = "by KezSoftworks",
         Theme = 'Amethyst',
         ConfigurationSaving = {
-            Enabled = false,
+            Enabled = true,
             FolderName = "KeziHub",
             FileName = "KeziHubConfig"
         }
@@ -34,27 +35,6 @@
             task.wait(90)
         end
     end)()
-
-    -- Re-ExecuteScriptWhenTeleport
-    local Players = game:GetService("Players")
-    local TeleportService = game:GetService("TeleportService")
-    
-    -- Executor's Support
-    queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-
-    -- Store current PlaceId and JobId
-    local PlaceId, JobId = game.PlaceId, game.JobId
-
-    -- Connecting to the OnTeleport event
-        Players.LocalPlayer.OnTeleport:Connect(function(State)
-            if queueteleport then
-                -- Primary Script
-                queueteleport([[
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/KziHB'))()
-                ]])
-            end
-        end)
 
 
 -- Tab for Stats
@@ -123,13 +103,20 @@
         end,
     })
 
-    -- Win / Lose Selection
+    -- Default Selected is Lose
     local optionWin = false
     local optionLose = false
+
+    if optionLose == false then
+        optionWin = false
+        optionLose = true
+    end
+    
+    -- Win / Lose Selection
     local Selection = MinigamesTab:CreateDropdown({
         Name = "Select Win / Lose",
         Options = {"Win" , "Lose"},
-        CurrentOption = "None",
+        CurrentOption = "Lose",
         MultipleOptions = false,
         Flag = "",
         Callback = function(Options)
@@ -172,7 +159,7 @@
                         folder1:Destroy()
                     end
                 end
-            end            
+            end
 
             -- Global Variables for Minigame States
             local isMiniGameWinActive = false
@@ -275,36 +262,101 @@
                 end
             else
                 -- Stop the minigame and reset variables if the toggle is turned off
-                if optionWin or optionLose then
+                coroutine.wrap(function()
                     isMiniGameWinActive = false
                     isMiniGameLoseActive = false
-                    leaveMinigame("2021Avanza15CVT")
-
+                    
                     -- Points Stats
                     points = 0
                     pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-
-                    -- Reset Character and leave the minigame
-                    if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                        player.Character:FindFirstChildOfClass("Humanoid").Health = 0
-                    end
                     
-                    -- Notify that Minigame AutoFarm has stopped
-                    coroutine.wrap(function()
-                        Rayfield:Notify({
-                            Title = "Minigames AutoFarm",
-                            Content = "Minigames AutoFarm is Disabled",
-                            Duration = 5,
-                            Image = "rewind",
-                        })
-                    end)
+                    -- Notify
+                    Rayfield:Notify({
+                        Title = "Minigames AutoFarm",
+                        Content = "Minigames AutoFarm is Disabled",
+                        Duration = 5,
+                        Image = "rewind",
+                    })
+                end)
+
+                leaveMinigame("2021Avanza15CVT")
+                -- Reset Character and leave the minigame
+                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
                 end
             end
         end,
     })
 
+
     -- Minigames Security Section
-    MinigamesTab:CreateSection("Minigames Security Bypass")
+    MinigamesTab:CreateSection("Minigames Settings")
+
+    -- Auto Rejoin when Bug Toggle
+    MinigamesTab:CreateToggle({
+        Name = "Auto Rejoin when Bug",
+        CurrentValue = true,
+        Flag = "Toggle AutoRejoinWhenBug",
+        Callback = function(AutoRejoinWhenBug)
+            ARwBug = AutoRejoinWhenBug
+        end,
+    })
+
+    -- Auto Rejoin when Bug
+    local function AutoRejoinWhenBug()
+        local blackoutDuration = 0
+        local maxDuration = 300 
+        local blackoutGui = game:GetService("StarterGui").Minigame.Main.BlackOut
+        
+        if ARwBug then
+            if blackoutGui.Visible then
+                local startTime = tick()
+                
+                -- Keep checking for the blackout duration
+                while blackoutGui.Visible do
+                    blackoutDuration = tick() - startTime
+                    
+                    if blackoutDuration >= maxDuration then
+                        -- Disable Auto Execute
+                        reExecuteScript = false
+
+                        -- AutoRejoin Variables
+                        local Players = game:GetService("Players")
+                        local TeleportService = game:GetService("TeleportService")
+                        
+                        -- Executor's Support
+                        queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+                        httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+            
+                        -- Store current PlaceId and JobId
+                        local PlaceId, JobId = game.PlaceId, game.JobId
+
+                        Players.LocalPlayer.OnTeleport:Connect(function(State)
+                            if queueteleport then
+                                -- Queue the PrivateServer join and script execution
+                                queueteleport([[
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                                    local args = {
+                                        [1] = "Join",
+                                        [2] = "45e0e7545845660",  -- The private server ID
+                                        [3] = "Jakarta"
+                                    }
+                                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                                ]])
+                            end
+                        end)
+                    end
+        
+                    task.wait(5)  -- Check every second
+                end
+            end
+        end
+    end
+
+    if ARwBug then
+        AutoRejoinWhenBug()
+    end
+
 
     local Value = true
     -- Anti Staff
@@ -351,7 +403,7 @@
             end
         end)
     end
-    
+
     -- Run AntiStaff Function
     if Value then
         print("AntiStaff Executed, you are protected by KeziHub")
@@ -554,15 +606,24 @@
     SettingsTab:CreateSection("Auto Rejoiner")
 
     -- Map Variables
+    local alrSelectMap = false
     local SelectJakarta = false
     local SelectJawaBarat = false
     local SelectJawaTengah = false
+
+    -- Default Jakarta
+    if SelectJakarta == false then
+        SelectJakarta = true
+        SelectJawaBarat = false
+        SelectJawaTengah = false
+        alrSelectMap = true
+    end
 
     -- Map Selection
     SettingsTab:CreateDropdown({
         Name = "Select Map",
         Options = {"Jakarta","JawaBarat","JawaTengah"},
-        CurrentOption = {"None"},
+        CurrentOption = {"Jakarta"},
         MultipleOptions = false,
         Flag = "Dropdown SelectMap",
         Callback = function(Options)
@@ -592,7 +653,6 @@
         Callback = function(Value)
             local Players = game:GetService("Players")
             local TeleportService = game:GetService("TeleportService")
-            local alrSelectMap = false
             
             -- Executor's Support
             queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
@@ -608,7 +668,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -625,7 +685,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -643,7 +703,7 @@
 
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "45e0e7545845660",  -- The private server ID
@@ -656,7 +716,7 @@
             end
             
             if alrSelectMap then
-                -- Teleport to the desired place (Jakarta)
+                reExecuteScript = false
                 TeleportService:Teleport(6911148748)
             else
                 coroutine.wrap(function()
@@ -709,6 +769,28 @@
         end,
     })
 
+-- Re-ExecuteScriptWhenTeleport
+    local Players = game:GetService("Players")
+    local TeleportService = game:GetService("TeleportService")
+    
+    -- Executor's Support
+    queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+    -- Store current PlaceId and JobId
+    local PlaceId, JobId = game.PlaceId, game.JobId
+
+    -- Connecting to the OnTeleport event
+    if reExecuteScript then
+        Players.LocalPlayer.OnTeleport:Connect(function(State)
+            if queueteleport then
+                -- Primary Script
+                queueteleport([[
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                ]])
+            end
+        end)
+    end
 
 -- Disable UI Reset
     local ScreenGui = Window
