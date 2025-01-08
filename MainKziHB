@@ -150,11 +150,14 @@
     })
 
     -- Start Minigame Toggle
+    local MgValue = false
     local StartMinigame = MinigamesTab:CreateToggle({
         Name = "Start Minigame",
         CurrentValue = false,
         Flag = "",
-        Callback = function(Value)
+        Callback = function(MinigameStartValue)
+            local MgValue = MinigameStartValue
+
             -- Turning off Rendering
             local function optimizeON()
                 local objects = {
@@ -229,7 +232,7 @@
             end
 
             -- Minigame AutoFarm Callback
-            if Value then
+            if MgValue then
                 buycar()
                 enterMinigame("2021Avanza15CVT")
                 optimizeON()
@@ -281,7 +284,7 @@
                         end
                     end)
                 end
-            elseif not Value and isMiniGameWinActive or isMiniGameLoseActive then
+            else
                 leaveMinigame("2021Avanza15CVT")
 
                 -- Stop the minigame and reset variables if the toggle is turned off
@@ -384,14 +387,14 @@
     end
 
 
-    local Value = true
+    local AntiValue = true
     -- Anti Staff
     MinigamesTab:CreateToggle({
         Name = "Anti Staff",
         CurrentValue = true,
         Flag = "Toggle AntiStaff",
         Callback = function(AntiStaffValue)
-            Value = AntiStaffValue
+            AntiValue = AntiStaffValue
         end,
     })
     
@@ -433,7 +436,7 @@
     end
 
     -- Run AntiStaff Function
-    if Value then
+    if AntiValue then
         print("AntiStaff Executed, you are protected by KeziHub")
         coroutine.wrap(function()
             while Value do
@@ -556,8 +559,10 @@
         Name = "AutoGacha Minigames",
         CurrentValue = false,
         Flag = "",
-        Callback = function(Value)
-            if Value then
+        Callback = function(MgGchaValue)
+            local MinigameGacha = MgGchaValue
+
+            if MgGchaValue then
                 disablegacha = false
                 startgacha()
             else
@@ -571,8 +576,10 @@
         Name = "AutoGacha Limited Box",
         CurrentValue = false,
         Flag = "",
-        Callback = function(Value)
-            if Value then
+        Callback = function(LmiGchaValue)
+            local LimitedGacha = LmiGchaValue
+
+            if LmiGchaValue then
                 disablegacha1 = false
                 startgacha1()
             else
@@ -586,8 +593,10 @@
         Name = "AutoGacha Gamepass Box",
         CurrentValue = false,
         Flag = "",
-        Callback = function(Value)
-            if Value then
+        Callback = function(GpGchaValue)
+            local GamepassGacha = GpGchaValue
+
+            if GpGchaValue then
                 disablegacha2 = false
                 startgacha2()
             else
@@ -600,10 +609,11 @@
     MiscTab:CreateSection("Car Dealers")
 
     -- Dealers
+    local Options = false
     MiscTab:CreateDropdown({
         Name = "Open Dealers",
         Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
-        CurrentOption = {"None"},
+        CurrentOption = {""},
         MultipleOptions = false,
         Flag = "",
         Callback = function(Options)
@@ -678,7 +688,7 @@
     -- Rejoin Button
     SettingsTab:CreateButton({
         Name = "Rejoin Private Server",
-        Callback = function(Value)
+        Callback = function(RejoinValue)
             local Players = game:GetService("Players")
             local TeleportService = game:GetService("TeleportService")
             
@@ -697,6 +707,7 @@
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            task.wait(5)
                             local args = {
                                 [1] = "Join",
                                 [2] = "4a9667557708070",  -- The private server ID
@@ -714,6 +725,7 @@
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            task.wait(5)
                             local args = {
                                 [1] = "Join",
                                 [2] = "4a9667557708070",  -- The private server ID
@@ -732,6 +744,7 @@
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            task.wait(5)
                             local args = {
                                 [1] = "Join",
                                 [2] = "4a9667557708070",  -- The private server ID
@@ -746,7 +759,7 @@
             local province = selectedMap or "Jakarta"
 
             local function joinmapwithoutMainmenu()
-                reExecuteScript = true
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                 local args = {
                     [1] = "Join",
                     [2] = "4a9667557708070",
@@ -757,6 +770,7 @@
 
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
+                    reExecuteScript = false
                     joinmapwithoutMainmenu()
                 else
                     reExecuteScript = false
@@ -795,7 +809,7 @@
         SelectJawaBarat = false
         SelectJawaTengah = false
         ARwBug = false
-        AntiStaffValue = false
+        AntiValue = false
     end
 
     -- Destroy Button
@@ -832,6 +846,7 @@
             if queueteleport then
                 -- Primary Script
                 queueteleport([[
+                    task.wait(5)
                     loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
                 ]])
             end
