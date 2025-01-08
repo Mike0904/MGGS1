@@ -31,6 +31,7 @@
                 Title = "Is there any bugs?",
                 Content = "Consider reporting any bugs in KeziHub Discord Server",
                 Duration = 6.5,
+                Image = "rewind",
             })
             task.wait(90)
         end
@@ -126,12 +127,7 @@
 
     -- Default Selected is Lose
     local optionWin = false
-    local optionLose = false
-
-    if optionLose == false then
-        optionWin = false
-        optionLose = true
-    end
+    local optionLose = true
     
     -- Win / Lose Selection
     local Selection = MinigamesTab:CreateDropdown({
@@ -154,7 +150,7 @@
     })
 
     -- Start Minigame Toggle
-    MinigamesTab:CreateToggle({
+    local StartMinigame = MinigamesTab:CreateToggle({
         Name = "Start Minigame",
         CurrentValue = false,
         Flag = "",
@@ -285,7 +281,7 @@
                         end
                     end)
                 end
-            else
+            elseif not Value and isMiniGameWinActive or isMiniGameLoseActive then
                 leaveMinigame("2021Avanza15CVT")
 
                 -- Stop the minigame and reset variables if the toggle is turned off
@@ -750,6 +746,7 @@
             local province = selectedMap or "Jakarta"
 
             local function joinmapwithoutMainmenu()
+                reExecuteScript = true
                 local args = {
                     [1] = "Join",
                     [2] = "4a9667557708070",
@@ -759,12 +756,11 @@
             end
 
             if alrSelectMap then
-                if not game.PlaceId == 6911148748 then
+                if game.PlaceId == 6911148748 then
+                    joinmapwithoutMainmenu()
+                else
                     reExecuteScript = false
                     TeleportService:Teleport(6911148748)
-                else
-                    reExecuteScript = true
-                    joinmapwithoutMainmenu()
                 end
             else
                 coroutine.wrap(function()
