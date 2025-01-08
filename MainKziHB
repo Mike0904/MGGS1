@@ -773,6 +773,8 @@
         SelectJakarta = false
         SelectJawaBarat = false
         SelectJawaTengah = false
+        ARwBug = false
+        AntiStaffValue = false
     end
 
     -- Destroy Button
