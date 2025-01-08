@@ -51,23 +51,15 @@
     })
 
     -- Update Current Points
-    local function updatePoints()
-        task.spawn(function()
-            while true do
-                local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
-                local CurrentPoints = PointLabelText.Text
-                CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
-                task.wait(1)
-            end
-        end)
-    end
+    coroutine.wrap(function()
+        while true do
+            local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
+            local CurrentPoints = PointLabelText.Text
+            CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
+            task.wait(1)
+        end
+    end)()
 
-    if PointLabelText then
-        task.spawn(function()
-            print("Minigame Text Founded")
-            updatePoints()
-        end)
-    end
 
     -- Points Tracking
     local points = 0
@@ -257,7 +249,7 @@
                                 -- Points Stats
                                 points = points + 10
                                 pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)
+                            end)()
 
                             enterMinigame("2021Avanza15CVT")
                         end
@@ -281,7 +273,7 @@
                                 -- Points Stats
                                 points = points + 5
                                 pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)
+                            end)()
                             
                             enterMinigame("2021Avanza15CVT")
                             Jump()
@@ -307,7 +299,7 @@
                         Duration = 5,
                         Image = "rewind",
                     })
-                end)
+                end)()
 
                 -- Reset Character and leave the minigame
                 if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
@@ -320,6 +312,8 @@
 
     -- Minigames Settings Section
     MinigamesTab:CreateSection("Minigames Settings")
+
+    local ARwBug = true
 
     -- Auto Rejoin when Bug Toggle
     MinigamesTab:CreateToggle({
@@ -430,7 +424,7 @@
                     end
                 end
             end
-        end)
+        end)()
     end
 
     -- Run AntiStaff Function
@@ -450,7 +444,7 @@
                 Duration = 5,
                 Image = "rewind",
             })
-        end)
+        end)()
     end
     
 
