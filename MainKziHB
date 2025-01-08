@@ -44,6 +44,31 @@
     -- Minigames Info Section
     StatsTab:CreateSection("Minigames Stats")
     
+    -- Current Points
+    local CurrentpointsLabel = StatsTab:CreateParagraph({
+        Title = "Current Points",
+        Content = "0"
+    })
+
+    -- Update Current Points
+    local function updatePoints()
+        task.spawn(function()
+            while true do
+                local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
+                local CurrentPoints = PointLabelText.Text
+                CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
+                task.wait(1)
+            end
+        end)
+    end
+
+    if PointLabelText then
+        task.spawn(function()
+            print("Minigame Text Founded")
+            updatePoints()
+        end)
+    end
+
     -- Points Tracking
     local points = 0
 
@@ -212,12 +237,13 @@
 
             -- Minigame AutoFarm Callback
             if Value then
+                buycar()
+                optimizeON()
+                enterMinigame("2021Avanza15CVT")
+
                 if optionWin then
                     isMiniGameWinActive = true
                     isMiniGameLoseActive = false
-                    buycar()
-                    optimizeON()
-                    enterMinigame("2021Avanza15CVT")
 
                     -- Points Stats
                     points = points + 10
@@ -227,10 +253,12 @@
                     player.CharacterAdded:Connect(function()
                         task.wait(pendingLoopTime)
                         if isMiniGameWinActive then
-                            -- Points Stats
-                            points = points + 10
-                            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            
+                            coroutine.wrap(function()
+                                -- Points Stats
+                                points = points + 10
+                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                            end)
+
                             enterMinigame("2021Avanza15CVT")
                         end
                     end)
@@ -238,9 +266,7 @@
                 elseif optionLose then
                     isMiniGameLoseActive = true
                     isMiniGameWinActive = false
-                    buycar()
-                    optimizeON()
-                    enterMinigame("2021Avanza15CVT")
+                    
                     Jump()
 
                     -- Points Stats
@@ -251,9 +277,11 @@
                     player.CharacterAdded:Connect(function()
                         task.wait(pendingLoopTime)
                         if isMiniGameLoseActive then
-                            -- Points Stats
-                            points = points + 5
-                            pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                            coroutine.wrap(function()
+                                -- Points Stats
+                                points = points + 5
+                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                            end)
                             
                             enterMinigame("2021Avanza15CVT")
                             Jump()
@@ -261,6 +289,8 @@
                     end)
                 end
             else
+                leaveMinigame("2021Avanza15CVT")
+
                 -- Stop the minigame and reset variables if the toggle is turned off
                 coroutine.wrap(function()
                     isMiniGameWinActive = false
@@ -279,7 +309,6 @@
                     })
                 end)
 
-                leaveMinigame("2021Avanza15CVT")
                 -- Reset Character and leave the minigame
                 if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
                     player.Character:FindFirstChildOfClass("Humanoid").Health = 0
@@ -289,7 +318,7 @@
     })
 
 
-    -- Minigames Security Section
+    -- Minigames Settings Section
     MinigamesTab:CreateSection("Minigames Settings")
 
     -- Auto Rejoin when Bug Toggle
@@ -335,7 +364,7 @@
                             if queueteleport then
                                 -- Queue the PrivateServer join and script execution
                                 queueteleport([[
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
                                     local args = {
                                         [1] = "Join",
                                         [2] = "45e0e7545845660",  -- The private server ID
@@ -423,7 +452,7 @@
             })
         end)
     end
-
+    
 
 -- Tab for Misc
     -- Load MiscTab
@@ -584,7 +613,7 @@
             
             local dealerFolder = dealership:FindFirstChild(selectedDealer)
             
-            if dealerFolder and dealerFolder:FindFirstChild("Prompt") then
+            if dealership and dealerFolder and dealerFolder:FindFirstChild("Prompt") then
                 fireproximityprompt(dealerFolder.Prompt)
             else
                 Rayfield:Notify({
@@ -671,7 +700,7 @@
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
-                                [2] = "45e0e7545845660",  -- The private server ID
+                                [2] = "4a9667557708070",  -- The private server ID
                                 [3] = "Jakarta"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -688,7 +717,7 @@
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
-                                [2] = "45e0e7545845660",  -- The private server ID
+                                [2] = "4a9667557708070",  -- The private server ID
                                 [3] = "JawaBarat"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -706,7 +735,7 @@
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
-                                [2] = "45e0e7545845660",  -- The private server ID
+                                [2] = "4a9667557708070",  -- The private server ID
                                 [3] = "JawaTengah"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
