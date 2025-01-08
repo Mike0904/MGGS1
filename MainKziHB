@@ -747,9 +747,25 @@
                 end)
             end
             
+            local province = selectedMap or "Jakarta"
+
+            local function joinmapwithoutMainmenu()
+                local args = {
+                    [1] = "Join",
+                    [2] = "4a9667557708070",
+                    [3] = province
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+            end
+
             if alrSelectMap then
-                reExecuteScript = false
-                TeleportService:Teleport(6911148748)
+                if not game.PlaceId == 6911148748 then
+                    reExecuteScript = false
+                    TeleportService:Teleport(6911148748)
+                else
+                    reExecuteScript = true
+                    joinmapwithoutMainmenu()
+                end
             else
                 coroutine.wrap(function()
                     Rayfield:Notify({
