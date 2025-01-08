@@ -52,11 +52,13 @@
 
     -- Update Current Points
     coroutine.wrap(function()
-        while true do
-            local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
-            local CurrentPoints = PointLabelText.Text
-            CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
-            task.wait(1)
+        if not game.PlaceId == 6911148748 then
+            while true do
+                local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
+                local CurrentPoints = PointLabelText.Text
+                CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
+                task.wait(1)
+            end
         end
     end)()
 
@@ -185,21 +187,24 @@
 
             -- Function to enter the minigame
             local function enterMinigame(vehicle)
-                local args = {
-                    [1] = "Enter",
-                    [2] = vehicle
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+                coroutine.wrap(function()
+                    local args = {
+                        [1] = "Enter",
+                        [2] = vehicle
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+                end) 
             end
 
             -- Function to leave the minigame
             local function leaveMinigame(vehicle)
-                sellcar()
                 local args = {
                     [1] = "Leave",
                     [2] = vehicle
                 }
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+                
+                sellcar()
             end
 
             local function Jump()
@@ -230,8 +235,8 @@
             -- Minigame AutoFarm Callback
             if Value then
                 buycar()
-                optimizeON()
                 enterMinigame("2021Avanza15CVT")
+                optimizeON()
 
                 if optionWin then
                     isMiniGameWinActive = true
@@ -332,51 +337,53 @@
         local blackoutGui = game:GetService("StarterGui").Minigame.Main.BlackOut
         
         if ARwBug then
-            if blackoutGui.Visible then
-                local startTime = tick()
-                
-                -- Keep checking for the blackout duration
-                while blackoutGui.Visible do
-                    blackoutDuration = tick() - startTime
+            if not game.PlaceId == 6911148748 then
+                if blackoutGui.Visible then
+                    local startTime = tick()
                     
-                    if blackoutDuration >= maxDuration then
-                        -- Disable Auto Execute
-                        reExecuteScript = false
-
-                        -- AutoRejoin Variables
-                        local Players = game:GetService("Players")
-                        local TeleportService = game:GetService("TeleportService")
+                    -- Keep checking for the blackout duration
+                    while blackoutGui.Visible do
+                        blackoutDuration = tick() - startTime
                         
-                        -- Executor's Support
-                        queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-                        httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-            
-                        -- Store current PlaceId and JobId
-                        local PlaceId, JobId = game.PlaceId, game.JobId
+                        if blackoutDuration >= maxDuration then
+                            -- Disable Auto Execute
+                            reExecuteScript = false
 
-                        Players.LocalPlayer.OnTeleport:Connect(function(State)
-                            if queueteleport then
-                                -- Queue the PrivateServer join and script execution
-                                queueteleport([[
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
-                                    local args = {
-                                        [1] = "Join",
-                                        [2] = "45e0e7545845660",  -- The private server ID
-                                        [3] = "Jakarta"
-                                    }
-                                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
-                                ]])
-                            end
-                        end)
+                            -- AutoRejoin Variables
+                            local Players = game:GetService("Players")
+                            local TeleportService = game:GetService("TeleportService")
+                            
+                            -- Executor's Support
+                            queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+                            httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+                
+                            -- Store current PlaceId and JobId
+                            local PlaceId, JobId = game.PlaceId, game.JobId
+
+                            Players.LocalPlayer.OnTeleport:Connect(function(State)
+                                if queueteleport then
+                                    -- Queue the PrivateServer join and script execution
+                                    queueteleport([[
+                                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
+                                        local args = {
+                                            [1] = "Join",
+                                            [2] = "45e0e7545845660",  -- The private server ID
+                                            [3] = "Jakarta"
+                                        }
+                                        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                                    ]])
+                                end
+                            end)
+                        end
+            
+                        task.wait(5)  -- Check every second
                     end
-        
-                    task.wait(5)  -- Check every second
                 end
             end
         end
     end
 
-    if ARwBug then
+    if not game.PlaceId == 6911148748 and ARwBug then
         AutoRejoinWhenBug()
     end
 
@@ -393,38 +400,40 @@
     })
     
     local function antiStaff()
-        coroutine.wrap(function()
-            local DevRank = {
-                "Developer",
-                "HeadDeveloper",
-                "OCDID",
-                "Owner",
-                "Staff"
-            }
-        
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-            local Players = game:GetService("Players")
-        
-            for _, rankName in ipairs(DevRank) do
-                local folder = ReplicatedStorage.Rank:FindFirstChild(rankName)
-                
-                if folder then
-                    for _, child in ipairs(folder:GetChildren()) do
-                        if child:IsA("IntValue") then
-                            local staffUserId = tonumber(child.Name)
-        
-                            if staffUserId then
-                                for _, player in ipairs(Players:GetPlayers()) do
-                                    if player.UserId == staffUserId then
-                                        game.Players.LocalPlayer:Kick("Staff Detected | KeziHub Security Notification")
+        if not game.PlaceId == 6911148748 then
+            coroutine.wrap(function()
+                local DevRank = {
+                    "Developer",
+                    "HeadDeveloper",
+                    "OCDID",
+                    "Owner",
+                    "Staff"
+                }
+            
+                local ReplicatedStorage = game:GetService("ReplicatedStorage")
+                local Players = game:GetService("Players")
+            
+                for _, rankName in ipairs(DevRank) do
+                    local folder = ReplicatedStorage.Rank:FindFirstChild(rankName)
+                    
+                    if folder then
+                        for _, child in ipairs(folder:GetChildren()) do
+                            if child:IsA("IntValue") then
+                                local staffUserId = tonumber(child.Name)
+            
+                                if staffUserId then
+                                    for _, player in ipairs(Players:GetPlayers()) do
+                                        if player.UserId == staffUserId then
+                                            game.Players.LocalPlayer:Kick("Staff Detected | KeziHub Security Notification")
+                                        end
                                     end
                                 end
                             end
                         end
                     end
                 end
-            end
-        end)()
+            end)()
+        end
     end
 
     -- Run AntiStaff Function
