@@ -52,7 +52,9 @@
 
     -- Update Current Points
     coroutine.wrap(function()
-        if not game.PlaceId == 6911148748 then
+        if game.PlaceId == 6911148748 then
+            return
+        else
             while true do
                 local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
                 local CurrentPoints = PointLabelText.Text
@@ -187,13 +189,11 @@
 
             -- Function to enter the minigame
             local function enterMinigame(vehicle)
-                coroutine.wrap(function()
-                    local args = {
-                        [1] = "Enter",
-                        [2] = vehicle
-                    }
-                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-                end) 
+                local args = {
+                    [1] = "Enter",
+                    [2] = vehicle
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
             end
 
             -- Function to leave the minigame
