@@ -18,7 +18,7 @@
         LoadingSubtitle = "by KezSoftworks",
         Theme = 'Amethyst',
         ConfigurationSaving = {
-            Enabled = true,
+            Enabled = false,
             FolderName = "KeziHub",
             FileName = "KeziHubConfig"
         }
@@ -150,160 +150,159 @@
     })
 
     -- Start Minigame Toggle
-    local MgValue = false
-    local StartMinigame = MinigamesTab:CreateToggle({
+    MinigamesTab:CreateToggle({
         Name = "Start Minigame",
         CurrentValue = false,
-        Flag = "",
-        Callback = function(MinigameStartValue)
-            local MgValue = MinigameStartValue
-
-            -- Turning off Rendering
-            local function optimizeON()
-                local objects = {
-                    "Lampu Kota",
-                    "LightingAmbientRevamp",
-                    "Stuff",
-                    "RoadLight"
-                }
-            
-                for _, folderName in ipairs(objects) do
-                    local folder = workspace:FindFirstChild(folderName)
-                    local folder1 = workspace.Map:FindFirstChild(folderName)  -- Make sure folder1 is checked here
-            
-                    -- Destroy folder if it exists in either location
-                    if folder then
-                        folder:Destroy()
-                    end
-                    if folder1 then
-                        folder1:Destroy()
-                    end
-                end
-            end
-
-            -- Global Variables for Minigame States
-            local isMiniGameWinActive = false
-            local isMiniGameLoseActive = false
-            local player = game.Players.LocalPlayer
-
-            -- Function to enter the minigame
-            local function enterMinigame(vehicle)
-                local args = {
-                    [1] = "Enter",
-                    [2] = vehicle
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-            end
-
-            -- Function to leave the minigame
-            local function leaveMinigame(vehicle)
-                local args = {
-                    [1] = "Leave",
-                    [2] = vehicle
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-                
-                sellcar()
-            end
-
-            local function Jump()
-                coroutine.wrap(function()
-                    -- Exit Car at Minigame
-                    while isMiniGameLoseActive do
-                        local player = game.Players.LocalPlayer
-                        local vehicleName = player.Name .. "sCar"
-                        local vehicleFolder = workspace.Vehicles
-                        local vehicle = vehicleFolder:FindFirstChild(vehicleName)
-            
-                        while not vehicle do
-                            task.wait(1)
-                            vehicle = vehicleFolder:FindFirstChild(vehicleName)
-                        end
-            
-                        local character = player.Character or player.CharacterAdded:Wait()
-                        local humanoid = character:WaitForChild("Humanoid")
-            
-                        while vehicle and vehicle.Parent do
-                            humanoid.Jump = true
-                            wait(0.5)
-                        end
-                    end
-                end)()
-            end
-
-            -- Minigame AutoFarm Callback
-            if MgValue then
-                buycar()
-                enterMinigame("2021Avanza15CVT")
-                optimizeON()
-
-                if optionWin then
-                    isMiniGameWinActive = true
-                    isMiniGameLoseActive = false
-
-                    -- Detect when the character resets
-                    player.CharacterAdded:Connect(function()
-                        task.wait(pendingLoopTime)
-                        if isMiniGameWinActive then
-                            coroutine.wrap(function()
-                                -- Points Stats
-                                points = points + 10
-                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)()
-
-                            enterMinigame("2021Avanza15CVT")
-                        end
-                    end)
-
-                elseif optionLose then
-                    isMiniGameLoseActive = true
-                    isMiniGameWinActive = false
-                    
-                    Jump()
-
-                    -- Detect when the character resets
-                    player.CharacterAdded:Connect(function()
-                        task.wait(pendingLoopTime)
-                        if isMiniGameLoseActive then
-                            coroutine.wrap(function()
-                                -- Points Stats
-                                points = points + 5
-                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)()
-                            
-                            enterMinigame("2021Avanza15CVT")
-                            Jump()
-                        end
-                    end)
-                end
-            else
-                leaveMinigame("2021Avanza15CVT")
-
-                -- Stop the minigame and reset variables if the toggle is turned off
-                coroutine.wrap(function()
-                    isMiniGameWinActive = false
-                    isMiniGameLoseActive = false
-                    
-                    -- Points Stats
-                    points = 0
-                    pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-                    
-                    -- Notify
-                    Rayfield:Notify({
-                        Title = "Minigames AutoFarm",
-                        Content = "Minigames AutoFarm is Disabled",
-                        Duration = 5,
-                        Image = "rewind",
-                    })
-                end)()
-
-                -- Reset Character and leave the minigame
-                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
-                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
-                end
-            end
+        Flag = "Toggle StartMinigame",
+        Callback = function(Value)
+            local MgValue = Value
         end,
     })
+
+    -- Turning off Rendering
+    local function optimizeON()
+        local objects = {
+            "Lampu Kota",
+            "LightingAmbientRevamp",
+            "Stuff",
+            "RoadLight"
+        }
+    
+        for _, folderName in ipairs(objects) do
+            local folder = workspace:FindFirstChild(folderName)
+            local folder1 = workspace.Map:FindFirstChild(folderName)  -- Make sure folder1 is checked here
+    
+            -- Destroy folder if it exists in either location
+            if folder then
+                folder:Destroy()
+            end
+            if folder1 then
+                folder1:Destroy()
+            end
+        end
+    end
+
+    -- Global Variables for Minigame States
+    local isMiniGameWinActive = false
+    local isMiniGameLoseActive = false
+    local player = game.Players.LocalPlayer
+
+    -- Function to enter the minigame
+    local function enterMinigame(vehicle)
+        local args = {
+            [1] = "Enter",
+            [2] = vehicle
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+    end
+
+    -- Function to leave the minigame
+    local function leaveMinigame(vehicle)
+        local args = {
+            [1] = "Leave",
+            [2] = vehicle
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+        
+        sellcar()
+    end
+
+    local function Jump()
+        coroutine.wrap(function()
+            -- Exit Car at Minigame
+            while isMiniGameLoseActive do
+                local player = game.Players.LocalPlayer
+                local vehicleName = player.Name .. "sCar"
+                local vehicleFolder = workspace.Vehicles
+                local vehicle = vehicleFolder:FindFirstChild(vehicleName)
+    
+                while not vehicle do
+                    task.wait(1)
+                    vehicle = vehicleFolder:FindFirstChild(vehicleName)
+                end
+    
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoid = character:WaitForChild("Humanoid")
+    
+                while vehicle and vehicle.Parent do
+                    humanoid.Jump = true
+                    wait(0.5)
+                end
+            end
+        end)()
+    end
+
+    -- Minigame AutoFarm Callback
+    if MgValue == true then
+        buycar()
+        enterMinigame("2021Avanza15CVT")
+        optimizeON()
+
+        if optionWin then
+            isMiniGameWinActive = true
+            isMiniGameLoseActive = false
+
+            -- Detect when the character resets
+            player.CharacterAdded:Connect(function()
+                task.wait(pendingLoopTime)
+                if isMiniGameWinActive then
+                    coroutine.wrap(function()
+                        -- Points Stats
+                        points = points + 10
+                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                    end)()
+
+                    enterMinigame("2021Avanza15CVT")
+                end
+            end)
+
+        elseif optionLose then
+            isMiniGameLoseActive = true
+            isMiniGameWinActive = false
+            
+            Jump()
+
+            -- Detect when the character resets
+            player.CharacterAdded:Connect(function()
+                task.wait(pendingLoopTime)
+                if isMiniGameLoseActive then
+                    coroutine.wrap(function()
+                        -- Points Stats
+                        points = points + 5
+                        pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
+                    end)()
+                    
+                    enterMinigame("2021Avanza15CVT")
+                    Jump()
+                end
+            end)
+        end
+    else
+        leaveMinigame("2021Avanza15CVT")
+
+        -- Stop the minigame and reset variables if the toggle is turned off
+        coroutine.wrap(function()
+            isMiniGameWinActive = false
+            isMiniGameLoseActive = false
+            
+            -- Points Stats
+            points = 0
+            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+            
+            -- Notify
+            Rayfield:Notify({
+                Title = "Minigames AutoFarm",
+                Content = "Minigames AutoFarm is Disabled",
+                Duration = 5,
+                Image = "rewind",
+            })
+        end)()
+
+        -- Reset Character and leave the minigame
+        if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+            player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+        end
+    end
 
 
     -- Minigames Settings Section
@@ -838,7 +837,15 @@
             if queueteleport then
                 -- Primary Script
                 queueteleport([[
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                    local executed = false
+                    
+                    if not executed then
+                        executed = true
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+
+                        warn("KeziHub Auto Executed | Kezi Softworks")
+                        print("Thank you for using Kezi Hub")
+                    end
                 ]])
             end
         end)
