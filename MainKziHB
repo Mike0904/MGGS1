@@ -241,10 +241,6 @@
                     isMiniGameWinActive = true
                     isMiniGameLoseActive = false
 
-                    -- Points Stats
-                    points = points + 10
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-
                     -- Detect when the character resets
                     player.CharacterAdded:Connect(function()
                         task.wait(pendingLoopTime)
@@ -264,10 +260,6 @@
                     isMiniGameWinActive = false
                     
                     Jump()
-
-                    -- Points Stats
-                    points = points + 5
-                    pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
 
                     -- Detect when the character resets
                     player.CharacterAdded:Connect(function()
@@ -366,7 +358,7 @@
                                         loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
                                         local args = {
                                             [1] = "Join",
-                                            [2] = "45e0e7545845660",  -- The private server ID
+                                            [2] = "ed9467545845660",  -- The private server ID
                                             [3] = "Jakarta"
                                         }
                                         game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -710,7 +702,7 @@
                             task.wait(5)
                             local args = {
                                 [1] = "Join",
-                                [2] = "4a9667557708070",  -- The private server ID
+                                [2] = "ed9467545845660",  -- The private server ID
                                 [3] = "Jakarta"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -728,7 +720,7 @@
                             task.wait(5)
                             local args = {
                                 [1] = "Join",
-                                [2] = "4a9667557708070",  -- The private server ID
+                                [2] = "ed9467545845660",  -- The private server ID
                                 [3] = "JawaBarat"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -747,7 +739,7 @@
                             task.wait(5)
                             local args = {
                                 [1] = "Join",
-                                [2] = "4a9667557708070",  -- The private server ID
+                                [2] = "ed9467545845660",  -- The private server ID
                                 [3] = "JawaTengah"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -762,7 +754,7 @@
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                 local args = {
                     [1] = "Join",
-                    [2] = "4a9667557708070",
+                    [2] = "ed9467545845660",
                     [3] = province
                 }
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -819,12 +811,12 @@
             Rayfield:Notify({
                 Title = "Disable Script",
                 Content = "Thank you for using Kezi Hub",
-                Duration = 5,
+                Duration = 0.5,
                 Image = "rewind",
             })
 
             disableloops()
-            task.wait(5)
+            task.wait(2)
             Rayfield:Destroy()
         end,
     })
