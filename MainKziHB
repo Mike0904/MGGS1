@@ -836,13 +836,15 @@
                 -- Primary Script
                 queueteleport([[
                     local executed = false
-                    
-                    if not executed then
-                        executed = true
-                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                    local coroutineRunning = false
 
-                        warn("KeziHub Auto Executed | Kezi Softworks")
-                        print("Thank you for using Kezi Hub")
+                    if not executed and not coroutineRunning then
+                        coroutine.wrap(function()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                            warn("KeziHub Auto Executed | Kezi Softworks")
+                            print("Thank you for using Kezi Hub")
+                            coroutineRunning = false
+                        end)()
                     end
                 ]])
             end
