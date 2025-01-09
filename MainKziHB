@@ -750,8 +750,7 @@
             local province = selectedMap or "Jakarta"
 
             local function joinmapwithoutMainmenu()
-                reExecuteScript = false
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                reExecuteScript = true
                 local args = {
                     [1] = "Join",
                     [2] = "ed9467545845660",
