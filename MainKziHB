@@ -198,13 +198,30 @@
 
     -- Function to leave the minigame
     local function leaveMinigame(vehicle)
-        local args = {
-            [1] = "Leave",
-            [2] = vehicle
-        }
-        game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-        
-        sellcar()
+        coroutine.wrap(function()
+            isMiniGameWinActive = false
+            isMiniGameLoseActive = false
+
+            local args = {
+                [1] = "Leave",
+                [2] = vehicle
+            }
+            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
+            
+            sellcar()
+
+            -- Points Stats
+            points = 0
+            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
+            
+            -- Notify
+            Rayfield:Notify({
+                Title = "Minigames AutoFarm",
+                Content = "Minigames AutoFarm is Disabled",
+                Duration = 5,
+                Image = "rewind",
+            })
+        end)()
     end
 
     local function Jump()
@@ -277,26 +294,8 @@
                 end
             end)
         end
-    else
+    elseif MgValue == false and isMiniGameLoseActive or isMiniGameWinActive then
         leaveMinigame("2021Avanza15CVT")
-
-        -- Stop the minigame and reset variables if the toggle is turned off
-        coroutine.wrap(function()
-            isMiniGameWinActive = false
-            isMiniGameLoseActive = false
-            
-            -- Points Stats
-            points = 0
-            pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-            
-            -- Notify
-            Rayfield:Notify({
-                Title = "Minigames AutoFarm",
-                Content = "Minigames AutoFarm is Disabled",
-                Duration = 5,
-                Image = "rewind",
-            })
-        end)()
 
         -- Reset Character and leave the minigame
         if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
