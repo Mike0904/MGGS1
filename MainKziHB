@@ -5,7 +5,7 @@
         game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     end)
 
-    local CurrentVersion = 1.0
+    local CurrentVersion = ("1.0")
     local reExecuteScript = true
     
     -- Rayfield Library Load
@@ -751,6 +751,7 @@
             local province = selectedMap or "Jakarta"
 
             local function joinmapwithoutMainmenu()
+                reExecuteScript = false
                 loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                 local args = {
                     [1] = "Join",
@@ -762,9 +763,8 @@
 
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
-                    reExecuteScript = false
                     joinmapwithoutMainmenu()
-                else
+                elseif not game.PlaceId == 6911148748 then
                     reExecuteScript = false
                     TeleportService:Teleport(6911148748)
                 end
@@ -838,7 +838,6 @@
             if queueteleport then
                 -- Primary Script
                 queueteleport([[
-                    task.wait(5)
                     loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
                 ]])
             end
