@@ -768,7 +768,7 @@
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
                     joinmapwithoutMainmenu()
-                elseif not game.PlaceId == 6911148748 then
+                else
                     reExecuteScript = false
                     TeleportService:Teleport(6911148748)
                 end
@@ -820,7 +820,7 @@
             })
 
             disableloops()
-            task.wait(2)
+            task.wait(1)
             Rayfield:Destroy()
         end,
     })
@@ -842,11 +842,12 @@
             if queueteleport then
                 -- Primary Script
                 queueteleport([[
-                    local executed = false
                     local coroutineRunning = false
 
-                    if not executed and not coroutineRunning then
+                    if not coroutineRunning then
+                        coroutineRunning = true
                         coroutine.wrap(function()
+                            getgenv().performanceMode = true
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
                             warn("KeziHub Auto Executed | Kezi Softworks")
                             print("Thank you for using Kezi Hub")
