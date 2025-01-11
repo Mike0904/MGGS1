@@ -6,14 +6,13 @@
     end)
 
     local CurrentVersion = ("1.0")
-    local reExecuteScript = true
     
     -- Rayfield Library Load
     local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
 
     -- UI Setup
     local Window = Rayfield:CreateWindow({
-        Name = "Kezi HUB ( Powered By ChatGPT ) V" ..CurrentVersion,
+        Name = "Kezi HUB ( Powered By ChatGPT ) V " ..CurrentVersion,
         LoadingTitle = "Kezi Hub",
         LoadingSubtitle = "by KezSoftworks",
         Theme = 'Amethyst',
@@ -342,9 +341,6 @@
                         blackoutDuration = tick() - startTime
                         
                         if blackoutDuration >= maxDuration then
-                            -- Disable Auto Execute
-                            reExecuteScript = false
-
                             -- AutoRejoin Variables
                             local Players = game:GetService("Players")
                             local TeleportService = game:GetService("TeleportService")
@@ -756,7 +752,6 @@
             local province = selectedMap or "Jakarta"
 
             local function joinmapwithoutMainmenu()
-                reExecuteScript = true
                 local args = {
                     [1] = "Join",
                     [2] = "ed9467545845660",
@@ -769,7 +764,6 @@
                 if game.PlaceId == 6911148748 then
                     joinmapwithoutMainmenu()
                 else
-                    reExecuteScript = false
                     TeleportService:Teleport(6911148748)
                 end
             else
@@ -837,27 +831,25 @@
     local PlaceId, JobId = game.PlaceId, game.JobId
 
     -- Connecting to the OnTeleport event
-    if reExecuteScript then
-        Players.LocalPlayer.OnTeleport:Connect(function(State)
-            if queueteleport then
-                -- Primary Script
-                queueteleport([[
-                    local coroutineRunning = false
+    Players.LocalPlayer.OnTeleport:Connect(function(State)
+        if queueteleport then
+            -- Primary Script
+            queueteleport([[
+                local coroutineRunning = false
 
-                    if not coroutineRunning then
-                        coroutineRunning = true
-                        coroutine.wrap(function()
-                            getgenv().performanceMode = true
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
-                            warn("KeziHub Auto Executed | Kezi Softworks")
-                            print("Thank you for using Kezi Hub")
-                            coroutineRunning = false
-                        end)()
-                    end
-                ]])
-            end
-        end)
-    end
+                if not coroutineRunning then
+                    coroutineRunning = true
+                    coroutine.wrap(function()
+                        getgenv().performanceMode = true
+                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                        warn("KeziHub Auto Executed | Kezi Softworks")
+                        print("Thank you for using Kezi Hub")
+                        coroutineRunning = false
+                    end)()
+                end
+            ]])
+        end
+    end)
 
 -- Disable UI Reset
     local ScreenGui = Window
