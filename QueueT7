@@ -21,5 +21,6 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
                 end)()
             end
         ]])
+        queueteleport = false
     end
 end)
