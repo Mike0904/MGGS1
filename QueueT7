@@ -11,7 +11,7 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         TeleportCheck = true
         queueteleport([[
             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
-            warn("KeziHub Auto Executed | Kezi Softworks")
+            warn("KeziHub Auto Executed (After Teleported) | Kezi Softworks")
             print("Thank you for using Kezi Hub")
             coroutineRunning = false
         ]])
