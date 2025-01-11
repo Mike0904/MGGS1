@@ -682,7 +682,7 @@
     -- Rejoin Button
     SettingsTab:CreateButton({
         Name = "Rejoin Private Server",
-        Callback = function(RejoinValue)
+        Callback = function()
             local Players = game:GetService("Players")
             local TeleportService = game:GetService("TeleportService")
             
@@ -694,13 +694,14 @@
             local PlaceId, JobId = game.PlaceId, game.JobId
 
             -- Map Table
-
             local TeleportCheck1 = false
             if SelectJakarta and not TeleportCheck1 then
                 alrSelectMap = true
+                TeleportCheck1 = true
+                TeleportCheck2 = false
+                TeleportCheck3 = false
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        TeleportCheck1 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
@@ -718,9 +719,11 @@
             local TeleportCheck2 = false
             elseif SelectJawaBarat and not TeleportCheck2 then
                 alrSelectMap = true
+                TeleportCheck1 = false
+                TeleportCheck2 = true
+                TeleportCheck3 = false
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        TeleportCheck2 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
@@ -738,30 +741,45 @@
             local TeleportCheck3 = false
             elseif SelectJawaTengah and not TeleportCheck3 then
                 alrSelectMap = true
+                TeleportCheck1 = false
+                TeleportCheck2 = false
+                TeleportCheck3 = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-                        TeleportCheck3 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            local coroutineRunning = false
-
-                            if not coroutineRunning then
-                                coroutine.wrap(function()
-                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
-                                    local args = {
-                                        [1] = "Join",
-                                        [2] = "ed9467545845660",  -- The private server ID
-                                        [3] = "JawaTengah"
-                                    }
-                                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
-                                end)()
-                            end
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            local args = {
+                                [1] = "Join",
+                                [2] = "ed9467545845660",  -- The private server ID
+                                [3] = "JawaTengah"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
                         ]])
                     end
                 end)
             end
             
-            local province = selectedMap or "Jakarta"
+            local TpOption = nil
+            if TeleportCheck1 then
+                TpOption = "Jakarta"
+            elseif TeleportCheck2 then
+                TpOption = "JawaBarat"
+            elseif TeleportCheck3 then
+                TpOption = "JawaTengah"
+            else
+                coroutine.wrap(function()
+                    Rayfield:Notify({
+                        Title = "Rejoiner",
+                        Content = "Map is Not Selected",
+                        Duration = 3,
+                        Image = "rewind",
+                    })
+                end)()
+                return
+            end
+
+            local province = TpOption
             local function joinmapwithoutMainmenu()
                 local args = {
                     [1] = "Join",
@@ -773,13 +791,11 @@
 
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
+                    TeleportCheck = false
                     joinmapwithoutMainmenu()
                 else
-                    -- Turn OFF Auto Execute
-                    TeleportCheck = true
-                    queueteleport = false
-                    -- Teleport to Main Menu
                     TeleportService:Teleport(6911148748)
+                    TeleportCheck = true
                 end
             else
                 coroutine.wrap(function()
@@ -810,7 +826,6 @@
         AntiValue = false
         -- Teleport True OFF
         TeleportCheck = true
-        queueteleport = false
     end
 
     -- Destroy Button
@@ -846,19 +861,11 @@
     Players.LocalPlayer.OnTeleport:Connect(function(State)
         if queueteleport and not TeleportCheck then
             TeleportCheck = true
-            queueteleport = false
             -- Primary Script
             queueteleport([[
-                local coroutineRunning = false
-                if not coroutineRunning then
-                    coroutine.wrap(function()
-                        getgenv().performanceMode = true
-                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
-                        warn("KeziHub Auto Executed | Kezi Softworks")
-                        print("Thank you for using Kezi Hub")
-                        coroutineRunning = true
-                    end)()
-                end
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                warn("KeziHub Auto Executed | Kezi Softworks")
+                print("Thank you for using Kezi Hub")
             ]])
         end
     end)
