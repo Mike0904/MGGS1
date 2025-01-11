@@ -11,7 +11,7 @@
     local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
 
     -- UI Setup
-    local Window = Rayfield:CreateWindow({
+    Rayfield:CreateWindow({
         Name = "Kezi HUB ( Powered By ChatGPT ) V " ..CurrentVersion,
         LoadingTitle = "Kezi Hub",
         LoadingSubtitle = "by KezSoftworks",
@@ -472,16 +472,18 @@
     local Section = MiscTab:CreateSection("Autogacha")
 
     -- Auto Gacha Function
-    local disablegacha = false
+    local allgacha = true
     local disablegacha1 = false
+    local disablegacha2 = false
+    local disablegacha3 = false
 
     -- Minigame Gacha
-    local function startgacha()
-        if disablegacha == false then
-            while startgacha do
-                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+    local function startgacha1()
+        if disablegacha1 == false and allgacha then
+            while startgacha1 do
+                local button1 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
-                if button then
+                if button1 then
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Minigame Box"
@@ -490,9 +492,9 @@
                     game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
                 end
 
-                task.wait(.1)
-
-                if disablegacha then
+                task.wait(.5)
+                allgacha = true
+                if disablegacha1 then
                     break
                 end
             end
@@ -500,12 +502,12 @@
     end
 
     -- Limited Gacha
-    local function startgacha1()
-        if disablegacha1 == false then
-            while startgacha1 do
-                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+    local function startgacha2()
+        if disablegacha2 == false and allgacha then
+            while startgacha2 do
+                local button2 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
-                if button then
+                if button2 then
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Limited Box"
@@ -514,9 +516,8 @@
                     game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
                 end
 
-                task.wait(.1)
-
-                if disablegacha1 then
+                task.wait(.5)
+                if disablegacha2 then
                     break
                 end
             end
@@ -525,11 +526,11 @@
 
     -- Gamepass Gacha
     local function startgacha2()
-        if disablegacha1 == false then
-            while startgacha2 do
-                local button = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+        if disablegacha3 == false and allgacha then
+            while startgacha3 do
+                local button3 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
 
-                if button then
+                if button3 then
                     local actionArgs = {
                         [1] = "Buy",
                         [2] = "Gamepass Box"
@@ -540,7 +541,7 @@
 
                 task.wait(.1)
 
-                if disablegacha2 then
+                if disablegacha3 then
                     break
                 end
             end
@@ -556,10 +557,10 @@
             local MinigameGacha = MgGchaValue
 
             if MgGchaValue then
-                disablegacha = false
-                startgacha()
+                disablegacha1 = false
+                startgacha1()
             else
-                disablegacha = true
+                disablegacha1 = true
             end
         end,
     })
@@ -573,10 +574,10 @@
             local LimitedGacha = LmiGchaValue
 
             if LmiGchaValue then
-                disablegacha1 = false
-                startgacha1()
+                disablegacha2 = false
+                startgacha2()
             else
-                disablegacha1 = true
+                disablegacha2 = true
             end
         end,
     })
@@ -590,10 +591,10 @@
             local GamepassGacha = GpGchaValue
 
             if GpGchaValue then
-                disablegacha2 = false
-                startgacha2()
+                disablegacha3 = false
+                startgacha3()
             else
-                disablegacha2 = true
+                disablegacha3 = true
             end
         end,
     })
@@ -692,11 +693,14 @@
             -- Store current PlaceId and JobId
             local PlaceId, JobId = game.PlaceId, game.JobId
 
-            -- Connecting to the OnTeleport event
-            if SelectJakarta then
+            -- Map Table
+
+            local TeleportCheck1 = false
+            if SelectJakarta and not TeleportCheck1 then
                 alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
+                        TeleportCheck1 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
@@ -711,10 +715,12 @@
                     end
                 end)
 
-            elseif SelectJawaBarat then
+            local TeleportCheck2 = false
+            elseif SelectJawaBarat and not TeleportCheck2 then
                 alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
+                        TeleportCheck2 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
@@ -729,28 +735,33 @@
                     end
                 end)
 
-            elseif SelectJawaTengah then
+            local TeleportCheck3 = false
+            elseif SelectJawaTengah and not TeleportCheck3 then
                 alrSelectMap = true
                 Players.LocalPlayer.OnTeleport:Connect(function(State)
                     if queueteleport then
-
+                        TeleportCheck3 = true
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
-                            task.wait(5)
-                            local args = {
-                                [1] = "Join",
-                                [2] = "ed9467545845660",  -- The private server ID
-                                [3] = "JawaTengah"
-                            }
-                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                            local coroutineRunning = false
+
+                            if not coroutineRunning then
+                                coroutine.wrap(function()
+                                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                                    local args = {
+                                        [1] = "Join",
+                                        [2] = "ed9467545845660",  -- The private server ID
+                                        [3] = "JawaTengah"
+                                    }
+                                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                                end)()
+                            end
                         ]])
                     end
                 end)
             end
             
             local province = selectedMap or "Jakarta"
-
             local function joinmapwithoutMainmenu()
                 local args = {
                     [1] = "Join",
@@ -764,6 +775,10 @@
                 if game.PlaceId == 6911148748 then
                     joinmapwithoutMainmenu()
                 else
+                    -- Turn OFF Auto Execute
+                    TeleportCheck = true
+                    queueteleport = false
+                    -- Teleport to Main Menu
                     TeleportService:Teleport(6911148748)
                 end
             else
@@ -775,8 +790,6 @@
                         Image = "rewind",
                     })
                 end)()
-
-                task.wait(3)
                 return
             end
         end,
@@ -787,19 +800,17 @@
 
     -- Disable All Loops
     local function disableloops()
-        Window = false
-        optionWin = false
-        optionLose = false
-        isMiniGameWinActive = false
-        isMiniGameLoseActive = false
-        disablegacha = true
-        disablegacha1 = true
-        disablegacha2 = true
-        SelectJakarta = false
-        SelectJawaBarat = false
-        SelectJawaTengah = false
+        -- Minigame OFF
+        MgValue = false
+        -- All Gacha OFF
+        allgacha = false
+        -- Anti Bug OFF
         ARwBug = false
+        -- Anti Staff OFF
         AntiValue = false
+        -- Teleport True OFF
+        TeleportCheck = true
+        queueteleport = false
     end
 
     -- Destroy Button
@@ -831,20 +842,22 @@
     local PlaceId, JobId = game.PlaceId, game.JobId
 
     -- Connecting to the OnTeleport event
+    local TeleportCheck = false
     Players.LocalPlayer.OnTeleport:Connect(function(State)
-        if queueteleport then
+        if queueteleport and not TeleportCheck then
+            TeleportCheck = true
+            queueteleport = false
             -- Primary Script
             queueteleport([[
                 local coroutineRunning = false
 
                 if not coroutineRunning then
-                    coroutineRunning = true
                     coroutine.wrap(function()
                         getgenv().performanceMode = true
                         loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
                         warn("KeziHub Auto Executed | Kezi Softworks")
                         print("Thank you for using Kezi Hub")
-                        coroutineRunning = false
+                        coroutineRunning = true
                     end)()
                 end
             ]])
