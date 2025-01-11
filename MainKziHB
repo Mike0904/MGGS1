@@ -11,7 +11,7 @@
     local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
 
     -- UI Setup
-    Rayfield:CreateWindow({
+    local Window = Rayfield:CreateWindow({
         Name = "Kezi HUB ( Powered By ChatGPT ) V " ..CurrentVersion,
         LoadingTitle = "Kezi Hub",
         LoadingSubtitle = "by KezSoftworks",
@@ -850,7 +850,6 @@
             -- Primary Script
             queueteleport([[
                 local coroutineRunning = false
-
                 if not coroutineRunning then
                     coroutine.wrap(function()
                         getgenv().performanceMode = true
