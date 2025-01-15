@@ -8,7 +8,7 @@
     local CurrentVersion = ("1.0")
     
     -- Rayfield Library Load
-    local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/Ryfie'))()
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
     -- UI Setup
     local Window = Rayfield:CreateWindow({
@@ -356,7 +356,7 @@
                                 if queueteleport then
                                     -- Queue the PrivateServer join and script execution
                                     queueteleport([[
-                                        loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueTpp'))()
+                                        loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/QueueTpp'))()
                                         local args = {
                                             [1] = "Join",
                                             [2] = "ed9467545845660",  -- The private server ID
@@ -704,7 +704,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
                                 [1] = "Join",
@@ -726,7 +726,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
                                 [1] = "Join",
@@ -748,7 +748,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            loadstring(game:HttpGet('hhttps://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/QueueT7'))()
                             local args = {
                                 [1] = "Join",
                                 [2] = "ed9467545845660",  -- The private server ID
@@ -863,7 +863,7 @@
             TeleportCheck = true
             -- Primary Script
             queueteleport([[
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/MainKziHB'))()
                 warn("KeziHub Auto Executed | Kezi Softworks")
                 print("Thank you for using Kezi Hub")
             ]])
