@@ -751,7 +751,7 @@
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/'))()
                             local args = {
                                 [1] = "Join",
-                                [2] = "ed9467545845660",  -- The private server ID
+                                [2] = "d5b5b7545845660",  -- The private server ID
                                 [3] = "JawaTengah"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -783,7 +783,7 @@
             local function joinmapwithoutMainmenu()
                 local args = {
                     [1] = "Join",
-                    [2] = "ed9467545845660",
+                    [2] = "d5b5b7545845660",
                     [3] = province
                 }
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
