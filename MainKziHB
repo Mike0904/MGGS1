@@ -1,3 +1,10 @@
+-- Kezi Running Stats
+    if KezLoaded then
+        return
+    end
+
+    pcall(function() getgenv().KezLoaded = true end)
+
 -- Rayfield UI Setup
     -- Anti-AFK Script
     game:GetService("Players").LocalPlayer.Idled:Connect(function()
@@ -64,7 +71,6 @@
         end
     end)()
 
-
     -- Points Tracking
     local points = 0
 
@@ -73,6 +79,35 @@
         Title = "Points Recieved",
         Content = "Start Minigame Autofarm to display points"
     })
+
+    -- Currencies Info Section
+    StatsTab:CreateSection("Currency Stats")
+
+    -- Currencies Updater
+    local MoneyUpdateLabel = StatsTab:CreateParagraph({
+        Title = "Current Money",
+        Content = "0"
+    })
+
+    coroutine.wrap(function()
+        if game.PlaceId == 6911148748 then
+            while true do
+                local MoneyLabelText1 = game:GetService("Players").LocalPlayer.PlayerGui.Hub.Container.Window.Marketplace.CashFrame.TextLabel
+                local CurrentMoney1 = MoneyLabelText1.Text
+                MoneyUpdateLabel:Set({Title = "Current Money", Content = tostring(CurrentMoney1)})
+                task.wait(1)
+            end
+            return
+        else
+            while true do
+                local MoneyLabelText2 = game:GetService("Players").LocalPlayer.PlayerGui.Main.Container.Hub.CashFrame.Frame.TextLabel
+                local CurrentMoney2 = MoneyLabelText2.Text
+                MoneyUpdateLabel:Set({Title = "Current Money", Content = tostring(CurrentMoney2)})
+                task.wait(1)
+            end
+        end
+    end)()
+    
 
 
 -- Tab for Minigames
@@ -839,6 +874,7 @@
                 Image = "rewind",
             })
 
+            pcall(function() getgenv().KezLoaded = false end)
             disableloops()
             task.wait(1)
             Rayfield:Destroy()
