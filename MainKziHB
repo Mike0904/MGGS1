@@ -12,22 +12,21 @@
         game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     end)
 
-    local CurrentVersion = ("1.0")
+    local CurrentVersion = ("1.2")
+    local LocalPlayerName = game.Players.LocalPlayer.Name
     
     -- Rayfield Library Load
     local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
     -- UI Setup
     local Window = Rayfield:CreateWindow({
-        Name = "Kezi HUB ( Powered By ChatGPT ) V " ..CurrentVersion,
+        Name = "Kezi HUB V " .. CurrentVersion .. " | @" .. LocalPlayerName,
+        Icon = 0,
         LoadingTitle = "Kezi Hub",
         LoadingSubtitle = "by KezSoftworks",
         Theme = 'Amethyst',
-        ConfigurationSaving = {
-            Enabled = false,
-            FolderName = "KeziHub",
-            FileName = "KeziHubConfig"
-        }
+        DisableRayfieldPrompts = true,
+        DisableBuildWarnings = true,
     })
 
     -- Notification
@@ -54,7 +53,7 @@
     -- Current Points
     local CurrentpointsLabel = StatsTab:CreateParagraph({
         Title = "Current Points",
-        Content = "0"
+        Content = "Your Points will be displayed once you join any map"
     })
 
     -- Update Current Points
