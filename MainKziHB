@@ -738,6 +738,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
+                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
@@ -760,6 +761,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
+                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
@@ -782,6 +784,7 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
+                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/'))()
                             local args = {
                                 [1] = "Join",
@@ -828,8 +831,8 @@
                     TeleportCheck = false
                     joinmapwithoutMainmenu()
                 else
+                    pcall(function() getgenv().KezAutoLoad = true end)
                     TeleportService:Teleport(6911148748)
-                    TeleportCheck = true
                 end
             else
                 coroutine.wrap(function()
@@ -892,18 +895,18 @@
     local PlaceId, JobId = game.PlaceId, game.JobId
 
     -- Connecting to the OnTeleport event
-    local TeleportCheck = false
-    Players.LocalPlayer.OnTeleport:Connect(function(State)
-        if queueteleport and not TeleportCheck then
-            TeleportCheck = true
-            -- Primary Script
-            queueteleport([[
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
-                warn("KeziHub Auto Executed | Kezi Softworks")
-                print("Thank you for using Kezi Hub")
-            ]])
-        end
-    end)
+    if not KezAutoLoad then
+        Players.LocalPlayer.OnTeleport:Connect(function(State)
+            if queueteleport and not TeleportCheck then
+                pcall(function() getgenv().KezAutoLoad = true end)
+                -- Primary Script
+                queueteleport([[
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                    warn("KeziHub Auto Executed | Kezi Softworks")
+                    print("Thank you for using Kezi Hub")
+                ]])
+            end
+        end)
 
 -- Disable UI Reset
     local ScreenGui = Window
