@@ -860,6 +860,7 @@
         -- Anti Staff OFF
         AntiValue = false
         -- Teleport True OFF
+        TeleportCheck = false
         queueteleport1 = nil
     end
 
