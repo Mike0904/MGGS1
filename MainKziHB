@@ -860,7 +860,7 @@
         -- Anti Staff OFF
         AntiValue = false
         -- Teleport True OFF
-        TeleportCheck = true
+        queueteleport1 = nil
     end
 
     -- Destroy Button
