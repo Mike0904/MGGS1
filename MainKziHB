@@ -738,7 +738,6 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
@@ -761,7 +760,6 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
                             task.wait(5)
                             local args = {
@@ -784,7 +782,6 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            pcall(function() getgenv().KezLoaded = true end)
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/'))()
                             local args = {
                                 [1] = "Join",
@@ -828,10 +825,12 @@
 
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
-                    TeleportCheck = false
+                    pcall(function() getgenv().KezAutoLoad = false end)
+                    pcall(function() getgenv().KezLoaded = true end)
                     joinmapwithoutMainmenu()
                 else
                     pcall(function() getgenv().KezAutoLoad = true end)
+                    pcall(function() getgenv().KezLoaded = true end)
                     TeleportService:Teleport(6911148748)
                 end
             else
