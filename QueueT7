@@ -5,15 +5,16 @@ queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus 
 httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local PlaceId, JobId = game.PlaceId, game.JobId
 
-local TeleportCheck = false
-Players.LocalPlayer.OnTeleport:Connect(function(State)
-    if queueteleport and not TeleportCheck then
-        TeleportCheck = true
-        queueteleport([[
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
-            warn("KeziHub Auto Executed (After Teleported) | Kezi Softworks")
-            print("Thank you for using Kezi Hub")
-            coroutineRunning = false
-        ]])
-    end
-end)
+if KezLoaded and KezAutoLoad then
+    Players.LocalPlayer.OnTeleport:Connect(function(State)
+        if queueteleport then
+            queueteleport([[
+                pcall(function() getgenv().KezAutoLoad = false end)
+                pcall(function() getgenv().KezLoaded = false end)
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/MainKziHB'))()
+                warn("KeziHub Auto Executed (After Teleported) | Kezi Softworks")
+                print("Thank you for using Kezi Hub")
+            ]])
+        end
+    end)
+end
