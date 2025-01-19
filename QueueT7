@@ -8,8 +8,6 @@ local PlaceId, JobId = game.PlaceId, game.JobId
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if queueteleport then
         queueteleport([[
-            pcall(function() getgenv().KezAutoLoad = false end)
-            pcall(function() getgenv().KezLoaded = false end)
             loadstring(game:HttpGet('https://raw.githubusercontent.com/rorss78/rorss/refs/heads/main/MainKziHB'))()
             warn("KeziHub Auto Executed (After Teleported) | Kezi Softworks")
             print("Thank you for using Kezi Hub")
