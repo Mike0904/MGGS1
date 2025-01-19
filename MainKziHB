@@ -907,6 +907,7 @@
                 ]])
             end
         end)
+    end
 
 -- Disable UI Reset
     local ScreenGui = Window
