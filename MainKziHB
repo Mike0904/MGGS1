@@ -739,10 +739,10 @@
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
-                            task.wait(5)
+                            print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
-                                [2] = "ed9467545845660",  -- The private server ID
+                                [2] = "d5b5b7545845660",  -- The private server ID
                                 [3] = "Jakarta"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -761,13 +761,14 @@
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
                             loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
-                            task.wait(5)
+                            print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
-                                [2] = "ed9467545845660",  -- The private server ID
+                                [2] = "d5b5b7545845660",  -- The private server ID
                                 [3] = "JawaBarat"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                            
                         ]])
                     end
                 end)
@@ -782,7 +783,8 @@
                     if queueteleport then
                         -- Queue the PrivateServer join and script execution
                         queueteleport([[
-                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/'))()
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
                                 [2] = "d5b5b7545845660",  -- The private server ID
@@ -825,12 +827,9 @@
 
             if alrSelectMap then
                 if game.PlaceId == 6911148748 then
-                    pcall(function() getgenv().KezAutoLoad = false end)
-                    pcall(function() getgenv().KezLoaded = true end)
                     joinmapwithoutMainmenu()
                 else
-                    pcall(function() getgenv().KezAutoLoad = true end)
-                    pcall(function() getgenv().KezLoaded = true end)
+                    queueteleport1 = nil
                     TeleportService:Teleport(6911148748)
                 end
             else
@@ -887,19 +886,19 @@
     local TeleportService = game:GetService("TeleportService")
     
     -- Executor's Support
-    queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+    queueteleport1 = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
     httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
     -- Store current PlaceId and JobId
     local PlaceId, JobId = game.PlaceId, game.JobId
 
     -- Connecting to the OnTeleport event
-    if not KezAutoLoad then
+    if not TeleportCheck then
         Players.LocalPlayer.OnTeleport:Connect(function(State)
-            if queueteleport and not TeleportCheck then
-                pcall(function() getgenv().KezAutoLoad = true end)
+            if queueteleport1 then
+                TeleportCheck = true
                 -- Primary Script
-                queueteleport([[
+                queueteleport1([[
                     loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
                     warn("KeziHub Auto Executed | Kezi Softworks")
                     print("Thank you for using Kezi Hub")
