@@ -1,3 +1,114 @@
+-- Kezi Running Stats
+    if KezLoaded then
+        return
+    end
+
+    pcall(function() getgenv().KezLoaded = true end)
+
+-- Rayfield UI Setup
+    -- Anti-AFK Script
+    game:GetService("Players").LocalPlayer.Idled:Connect(function()
+        game:GetService("VirtualUser"):CaptureController()
+        game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    end)
+
+    local CurrentVersion = ("1.2")
+    local LocalPlayerName = game.Players.LocalPlayer.Name
+    
+    -- Rayfield Library Load
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+    -- UI Setup
+    local Window = Rayfield:CreateWindow({
+        Name = "Kezi HUB V " .. CurrentVersion .. " | @" .. LocalPlayerName,
+        Icon = 0,
+        LoadingTitle = "Kezi Hub",
+        LoadingSubtitle = "by KezSoftworks",
+        Theme = 'Amethyst',
+        DisableRayfieldPrompts = true,
+        DisableBuildWarnings = true,
+    })
+
+    -- Notification
+    coroutine.wrap(function()
+        while Window do
+            Rayfield:Notify({
+                Title = "Is there any bugs?",
+                Content = "Consider reporting any bugs in KeziHub Discord Server",
+                Duration = 6.5,
+                Image = "rewind",
+            })
+            task.wait(90)
+        end
+    end)()
+
+
+-- Tab for Stats
+    -- Load StatsTab
+    local StatsTab = Window:CreateTab("Stats")
+
+    -- Minigames Info Section
+    StatsTab:CreateSection("Minigames Stats")
+    
+    -- Current Points
+    local CurrentpointsLabel = StatsTab:CreateParagraph({
+        Title = "Current Points",
+        Content = "Your Points will be displayed once you join any map"
+    })
+
+    -- Update Current Points
+    coroutine.wrap(function()
+        if game.PlaceId == 6911148748 then
+            return
+        else
+            while true do
+                local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
+                local CurrentPoints = PointLabelText.Text
+                CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
+                task.wait(1)
+            end
+        end
+    end)()
+
+    -- Points Tracking
+    local points = 0
+
+    -- Point Label
+    local pointsLabel = StatsTab:CreateParagraph({
+        Title = "Points Recieved",
+        Content = "Start Minigame Autofarm to display points"
+    })
+
+    -- Currencies Info Section
+    StatsTab:CreateSection("Currency Stats")
+
+    -- Currencies Updater
+    local MoneyUpdateLabel = StatsTab:CreateParagraph({
+        Title = "Current Money",
+        Content = "0"
+    })
+
+    coroutine.wrap(function()
+        if game.PlaceId == 6911148748 then
+            while true do
+                local MoneyLabelText1 = game:GetService("Players").LocalPlayer.PlayerGui.Hub.Container.Window.Marketplace.CashFrame.TextLabel
+                local CurrentMoney1 = MoneyLabelText1.Text
+                MoneyUpdateLabel:Set({Title = "Current Money", Content = tostring(CurrentMoney1)})
+                task.wait(1)
+            end
+            return
+        else
+            while true do
+                local MoneyLabelText2 = game:GetService("Players").LocalPlayer.PlayerGui.Main.Container.Hub.CashFrame.Frame.TextLabel
+                local CurrentMoney2 = MoneyLabelText2.Text
+                MoneyUpdateLabel:Set({Title = "Current Money", Content = tostring(CurrentMoney2)})
+                task.wait(1)
+            end
+        end
+    end)()
+    
+
+
 -- Tab for Minigames
     -- Load Minigames Tab
     local MinigamesTab = Window:CreateTab("Minigames")
@@ -423,3 +534,433 @@
             })
         end)()
     end
+    
+
+-- Tab for Misc
+    -- Load MiscTab
+    local MiscTab = Window:CreateTab("Misc")
+
+    -- Box Section
+    MiscTab:CreateSection("Box")
+
+    -- Local's for Gacha
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local StarterGui = game:GetService("StarterGui")
+
+    -- Open Gacha UI
+    MiscTab:CreateButton({
+        Name = "Open Gacha UI",
+        Callback = function()
+            fireproximityprompt(workspace.Etc.NPC.BOXSHOP.ProximityPrompt)
+        end,
+    })
+
+    -- Auto Gacha Section
+    local Section = MiscTab:CreateSection("Autogacha")
+
+    -- Auto Gacha Function
+    local allgacha = true
+    local disablegacha1 = false
+    local disablegacha2 = false
+    local disablegacha3 = false
+
+    -- Minigame Gacha
+    local function startgacha1()
+        if disablegacha1 == false and allgacha then
+            while startgacha1 do
+                local button1 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+                if button1 then
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Minigame Box"
+                    }
+
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
+
+                task.wait(.5)
+                allgacha = true
+                if disablegacha1 then
+                    break
+                end
+            end
+        end
+    end
+
+    -- Limited Gacha
+    local function startgacha2()
+        if disablegacha2 == false and allgacha then
+            while startgacha2 do
+                local button2 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+                if button2 then
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Limited Box"
+                    }
+
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
+
+                task.wait(.5)
+                if disablegacha2 then
+                    break
+                end
+            end
+        end
+    end
+
+    -- Gamepass Gacha
+    local function startgacha2()
+        if disablegacha3 == false and allgacha then
+            while startgacha3 do
+                local button3 = game:GetService("StarterGui").Gacha.Container.Winning.TextButton
+
+                if button3 then
+                    local actionArgs = {
+                        [1] = "Buy",
+                        [2] = "Gamepass Box"
+                    }
+
+                    game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Box"):FireServer(unpack(actionArgs))
+                end
+
+                task.wait(.1)
+
+                if disablegacha3 then
+                    break
+                end
+            end
+        end
+    end
+
+    -- Auto Gacha Minigames Toggle
+    MiscTab:CreateToggle({
+        Name = "AutoGacha Minigames",
+        CurrentValue = false,
+        Flag = "",
+        Callback = function(MgGchaValue)
+            local MinigameGacha = MgGchaValue
+
+            if MgGchaValue then
+                disablegacha1 = false
+                startgacha1()
+            else
+                disablegacha1 = true
+            end
+        end,
+    })
+
+    -- Auto Gacha Limited Toggle
+    MiscTab:CreateToggle({
+        Name = "AutoGacha Limited Box",
+        CurrentValue = false,
+        Flag = "",
+        Callback = function(LmiGchaValue)
+            local LimitedGacha = LmiGchaValue
+
+            if LmiGchaValue then
+                disablegacha2 = false
+                startgacha2()
+            else
+                disablegacha2 = true
+            end
+        end,
+    })
+
+    -- Auto Gacha Gamepass Toggle
+    MiscTab:CreateToggle({
+        Name = "AutoGacha Gamepass Box",
+        CurrentValue = false,
+        Flag = "",
+        Callback = function(GpGchaValue)
+            local GamepassGacha = GpGchaValue
+
+            if GpGchaValue then
+                disablegacha3 = false
+                startgacha3()
+            else
+                disablegacha3 = true
+            end
+        end,
+    })
+
+    -- Dealers Section
+    MiscTab:CreateSection("Car Dealers")
+
+    -- Dealers
+    local Options = false
+    MiscTab:CreateDropdown({
+        Name = "Open Dealers",
+        Options = {"77", "Audi", "Bandung", "BMW", "Daihatsu", "Honda", "Hyundai", "KIA", "Komersial", "Lexus", "Mazda", "MercedesBenz", "Mitsubishi", "Nissan", "Otnas", "Premium", "Suzuki", "Toyota", "VW", "Wuling"},
+        CurrentOption = {""},
+        MultipleOptions = false,
+        Flag = "",
+        Callback = function(Options)
+            local selectedDealer = Options[1]
+            local dealership = workspace.Etc.Dealership
+            
+            local dealerFolder = dealership:FindFirstChild(selectedDealer)
+            
+            if dealership and dealerFolder and dealerFolder:FindFirstChild("Prompt") then
+                fireproximityprompt(dealerFolder.Prompt)
+            else
+                Rayfield:Notify({
+                    Title = "Dealership",
+                    Content = "The Dealer u choose is not available or located in another province",
+                    Duration = 5,
+                    Image = "rewind",
+                })
+            end
+        end,
+    })
+
+
+-- Tab for Settings
+    -- Load SettingsTab
+    local SettingsTab = Window:CreateTab("Settings")
+
+    -- Auto Rejoiner Section
+    SettingsTab:CreateSection("Auto Rejoiner")
+
+    -- Map Variables
+    local alrSelectMap = false
+    local SelectJakarta = false
+    local SelectJawaBarat = false
+    local SelectJawaTengah = false
+
+    -- Default Jakarta
+    if SelectJakarta == false then
+        SelectJakarta = true
+        SelectJawaBarat = false
+        SelectJawaTengah = false
+        alrSelectMap = true
+    end
+
+    -- Map Selection
+    SettingsTab:CreateDropdown({
+        Name = "Select Map",
+        Options = {"Jakarta","JawaBarat","JawaTengah"},
+        CurrentOption = {"Jakarta"},
+        MultipleOptions = false,
+        Flag = "Dropdown SelectMap",
+        Callback = function(Options)
+            local selectedMap = Options[1]
+
+            if selectedMap == "Jakarta" then
+                SelectJakarta = true
+                SelectJawaBarat = false
+                SelectJawaTengah = false
+            
+            elseif selectedMap == "JawaBarat" then
+                SelectJakarta = false
+                SelectJawaBarat = true
+                SelectJawaTengah = false
+            
+            elseif selectedMap == "JawaTengah" then
+                SelectJakarta = false
+                SelectJawaBarat = false
+                SelectJawaTengah = true
+            end
+        end,
+    })
+
+    -- Rejoin Button
+    SettingsTab:CreateButton({
+        Name = "Rejoin Private Server",
+        Callback = function()
+            local Players = game:GetService("Players")
+            local TeleportService = game:GetService("TeleportService")
+            
+            -- Executor's Support
+            queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+            httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+            -- Store current PlaceId and JobId
+            local PlaceId, JobId = game.PlaceId, game.JobId
+
+            -- Map Table
+            local TeleportCheck1 = false
+            if SelectJakarta and not TeleportCheck1 then
+                alrSelectMap = true
+                TeleportCheck1 = true
+                TeleportCheck2 = false
+                TeleportCheck3 = false
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if queueteleport then
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            print("Waiting for Teleportation")
+                            local args = {
+                                [1] = "Join",
+                                [2] = "3fc4f7545845660",  -- The private server ID
+                                [3] = "Jakarta"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                        ]])
+                    end
+                end)
+
+            local TeleportCheck2 = false
+            elseif SelectJawaBarat and not TeleportCheck2 then
+                alrSelectMap = true
+                TeleportCheck1 = false
+                TeleportCheck2 = true
+                TeleportCheck3 = false
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if queueteleport then
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            print("Waiting for Teleportation")
+                            local args = {
+                                [1] = "Join",
+                                [2] = "3fc4f7545845660",  -- The private server ID
+                                [3] = "JawaBarat"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                            
+                        ]])
+                    end
+                end)
+
+            local TeleportCheck3 = false
+            elseif SelectJawaTengah and not TeleportCheck3 then
+                alrSelectMap = true
+                TeleportCheck1 = false
+                TeleportCheck2 = false
+                TeleportCheck3 = true
+                Players.LocalPlayer.OnTeleport:Connect(function(State)
+                    if queueteleport then
+                        -- Queue the PrivateServer join and script execution
+                        queueteleport([[
+                            loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/QueueT7'))()
+                            print("Waiting for Teleportation")
+                            local args = {
+                                [1] = "Join",
+                                [2] = "3fc4f7545845660",  -- The private server ID
+                                [3] = "JawaTengah"
+                            }
+                            game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+                        ]])
+                    end
+                end)
+            end
+            
+            local TpOption = nil
+            if TeleportCheck1 then
+                TpOption = "Jakarta"
+            elseif TeleportCheck2 then
+                TpOption = "JawaBarat"
+            elseif TeleportCheck3 then
+                TpOption = "JawaTengah"
+            else
+                coroutine.wrap(function()
+                    Rayfield:Notify({
+                        Title = "Rejoiner",
+                        Content = "Map is Not Selected",
+                        Duration = 3,
+                        Image = "rewind",
+                    })
+                end)()
+                return
+            end
+
+            local province = TpOption
+            local function joinmapwithoutMainmenu()
+                local args = {
+                    [1] = "Join",
+                    [2] = "3fc4f7545845660",
+                    [3] = province
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
+            end
+
+            if alrSelectMap then
+                if game.PlaceId == 6911148748 then
+                    joinmapwithoutMainmenu()
+                else
+                    queueteleport1 = nil
+                    TeleportService:Teleport(6911148748)
+                end
+            else
+                coroutine.wrap(function()
+                    Rayfield:Notify({
+                        Title = "Auto Rejoiner",
+                        Content = "Select Map before Auto Rejoin",
+                        Duration = 3,
+                        Image = "rewind",
+                    })
+                end)()
+                return
+            end
+        end,
+    })
+
+    -- Delete UI Section
+    SettingsTab:CreateSection("Disable Hub")
+
+    -- Disable All Loops
+    local function disableloops()
+        -- Minigame OFF
+        MgValue = false
+        -- All Gacha OFF
+        allgacha = false
+        -- Anti Bug OFF
+        ARwBug = false
+        -- Anti Staff OFF
+        AntiValue = false
+        -- Teleport True OFF
+        TeleportCheck = false
+        queueteleport1 = nil
+    end
+
+    -- Destroy Button
+    SettingsTab:CreateButton({
+        Name = "Disable Script",
+        Callback = function()
+            Rayfield:Notify({
+                Title = "Disable Script",
+                Content = "Thank you for using Kezi Hub",
+                Duration = 0.5,
+                Image = "rewind",
+            })
+
+            pcall(function() getgenv().KezLoaded = false end)
+            disableloops()
+            task.wait(1)
+            Rayfield:Destroy()
+        end,
+    })
+
+-- Re-ExecuteScriptWhenTeleport
+    local Players = game:GetService("Players")
+    local TeleportService = game:GetService("TeleportService")
+    
+    -- Executor's Support
+    queueteleport1 = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+
+    -- Store current PlaceId and JobId
+    local PlaceId, JobId = game.PlaceId, game.JobId
+
+    -- Connecting to the OnTeleport event
+    if not TeleportCheck then
+        Players.LocalPlayer.OnTeleport:Connect(function(State)
+            if queueteleport1 then
+                TeleportCheck = true
+                -- Primary Script
+                queueteleport1([[
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Mike0904/MGGS1/refs/heads/main/MainKziHB'))()
+                    warn("KeziHub Auto Executed | Kezi Softworks")
+                    print("Thank you for using Kezi Hub")
+                ]])
+            end
+        end)
+    end
+
+-- Disable UI Reset
+    local ScreenGui = Window
+    ScreenGui.ResetOnSpawn = false
