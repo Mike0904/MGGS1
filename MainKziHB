@@ -141,7 +141,7 @@
     MinigamesTab:CreateSection("Minigames AutoFarm")
 
     -- Pending Loop Time
-    local pendingLoopTime = 1.5
+    local pendingLoopTime = 2
     local Input = MinigamesTab:CreateInput({
         Name = "Pending Loop Time",
         CurrentValue = tostring(pendingLoopTime),
@@ -153,7 +153,7 @@
             if time then
                 pendingLoopTime = time
             else
-                pendingLoopTime = 1.5
+                pendingLoopTime = 2
             end
         end,
     })
@@ -742,7 +742,7 @@
                             print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
-                                [2] = "d5b5b7545845660",  -- The private server ID
+                                [2] = "3fc4f7545845660",  -- The private server ID
                                 [3] = "Jakarta"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -764,7 +764,7 @@
                             print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
-                                [2] = "d5b5b7545845660",  -- The private server ID
+                                [2] = "3fc4f7545845660",  -- The private server ID
                                 [3] = "JawaBarat"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
@@ -787,7 +787,7 @@
                             print("Waiting for Teleportation")
                             local args = {
                                 [1] = "Join",
-                                [2] = "d5b5b7545845660",  -- The private server ID
+                                [2] = "3fc4f7545845660",  -- The private server ID
                                 [3] = "JawaTengah"
                             }
                             game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
