@@ -781,7 +781,7 @@
 
             if SelectedServer == "Server RaraSpecialistRBB" then
                 ServerCode = "3fc4f7545845660"
-            elseif SelectedServer == "ElzioLiatMamah"
+            elseif SelectedServer == "ElzioLiatMamah" then
                 ServerCode = "8b1dd7654135844"
             end
         end,
