@@ -766,6 +766,27 @@
         end,
     })
 
+    -- Server Selection Variables
+    local SelectedServer = "Server RaraSpecialistRBB"
+    local ServerCode = nil
+
+    -- Server Selection
+    SettingsTab:CreateDropdown({
+        Name = "Select Server",
+        Options = {"Server RaraSpecialistRBB","Server ElzioLiatMamah"},
+        CurrentOption = {"Server RaraSpecialistRBB"},
+        MultipleOptions = false,
+        Callback = function(Options)
+            local SelectedServer = Options[1]
+
+            if SelectedServer == "Server RaraSpecialistRBB" then
+                ServerCode = "3fc4f7545845660"
+            elseif SelectedServer == "ElzioLiatMamah"
+                ServerCode = "8b1dd7654135844"
+            end
+        end,
+     })
+
     -- Rejoin Button
     SettingsTab:CreateButton({
         Name = "Rejoin Private Server",
@@ -872,7 +893,7 @@
             local function joinmapwithoutMainmenu()
                 local args = {
                     [1] = "Join",
-                    [2] = "3fc4f7545845660",
+                    [2] = ServerCode,
                     [3] = province
                 }
                 game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("PrivateServer"):FireServer(unpack(args))
