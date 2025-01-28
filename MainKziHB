@@ -108,7 +108,6 @@
     end)()
     
 
-
 -- Tab for Minigames
     -- Load Minigames Tab
     local MinigamesTab = Window:CreateTab("Minigames")
@@ -182,6 +181,7 @@
         end,
     })
 
+    local MgValue = nil
     -- Start Minigame Toggle
     MinigamesTab:CreateToggle({
         Name = "Start Minigame",
@@ -213,30 +213,30 @@
                 folder1:Destroy()
             end
         end
+
+        -- Delete Fence
+        local Fence = workspace.Map.Prop:GetChildren()[16]
+        if Fence then 
+            Fence:Destroy()
+        end
+
+        -- Delete Building
+        local NpcBuilding = workspace.Map.Building["building 1"]
+        if NpcBuilding then
+            NpcBuilding:Destroy()
+        end
     end
-
-    -- Delete Fence
-    local Fence = workspace.Map.Prop:GetChildren()[16]
-    if Fence then 
-        Fence:Destroy()
-    end
-
-    -- Delete Building
-    local NpcBuilding = workspace.Map.Building["building 1"]
-    if NpcBuilding then
-        NpcBuilding:Destroy()
-    end
-
-    -- Go To NPC
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local npc = workspace.Etc.NPC.Minigame
-
-    local npcPivot = npc.WorldPivot
-    local duration = 10
-    local freezeDuration = 2
 
     local function flyToNpcPivot()
+        -- Go To NPC
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local npc = workspace.Etc.NPC.Minigame
+
+        local npcPivot = npc.WorldPivot
+        local duration = 10
+        local freezeDuration = 2
+        
         local npctravel = false
         local hrp = character:FindFirstChild("HumanoidRootPart")
         if not hrp then return end
@@ -275,7 +275,6 @@
 
     -- Function to enter the minigame
     local function enterMinigame(vehicle)
-
         local args = {
             [1] = "Enter",
             [2] = vehicle
@@ -290,7 +289,6 @@
             [2] = vehicle
         }
         game:GetService("ReplicatedStorage"):WaitForChild("NetworkContainer"):WaitForChild("RemoteEvents"):WaitForChild("Minigames"):FireServer(unpack(args))
-        
         sellcar()
     end
 
@@ -366,7 +364,7 @@
                 end
             end)
         end
-    else
+    elseif MgValue == false then
         leaveMinigame("2021Avanza15CVT")
 
         -- Stop the minigame and reset variables if the toggle is turned off
@@ -781,7 +779,7 @@
 
             if SelectedServer == "Server RaraSpecialistRBB" then
                 ServerCode = "3fc4f7545845660"
-            elseif SelectedServer == "ElzioLiatMamah" then
+            else
                 ServerCode = "8b1dd7654135844"
             end
         end,
