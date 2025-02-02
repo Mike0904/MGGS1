@@ -47,37 +47,58 @@
     -- Load StatsTab
     local StatsTab = Window:CreateTab("Stats")
 
-    -- Minigames Info Section
-    StatsTab:CreateSection("Minigames Stats")
-    
-    -- Current Points
-    local CurrentpointsLabel = StatsTab:CreateParagraph({
-        Title = "Current Points",
-        Content = "Your Points will be displayed once you join any map"
-    })
-
-    -- Update Current Points
+    -- Points Stats Only Run at MAP
     coroutine.wrap(function()
-        if game.PlaceId == 6911148748 then
-            return
-        else
-            while true do
-                local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
-                local CurrentPoints = PointLabelText.Text
-                CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
-                task.wait(1)
+        if game.PlaceId == 14005966837 or game.PlaceId == 9233343468 or game.PlaceId == 9508940498 then
+            -- Minigames Info Section
+            StatsTab:CreateSection("Minigames Stats")
+
+            if game.PlaceId == 14005966837 then
+                -- Minigame Countdown
+                local CurrentCountdownLabel = StatsTab:CreateParagraph({
+                    Title = "Minigame Countdown",
+                    Content = "Minigame is Not Available"
+                })
+
+                -- Update Current Countdown
+                coroutine.wrap(function()
+                    while true do
+                        local Countdown = game:GetService("Players").LocalPlayer.PlayerGui.Race.Container.Minigame.MainFrame.Status
+                        local CountdownText = Countdown.Text
+                        CurrentCountdownLabel:Set({Title = "Minigame Countdown", Content = tostring(CountdownText)})
+                        task.wait(1)
+                    end
+                end)()
+            end
+
+            -- Current Points
+            local CurrentpointsLabel = StatsTab:CreateParagraph({
+                Title = "Current Points",
+                Content = "Your Points will be displayed once you join any map"
+            })
+
+            -- Update Current Points
+            coroutine.wrap(function()
+                while true do
+                    local PointLabelText = game:GetService("Players").LocalPlayer.PlayerGui.BoxShop.Container.Box.MinigamePoint
+                    local CurrentPoints = PointLabelText.Text
+                    CurrentpointsLabel:Set({Title = "Current Points", Content = tostring(CurrentPoints)})
+                    task.wait(1)
+                end
+            end)()
+
+            if game.PlaceId == 14005966837 then
+                -- Points Tracking
+                local points = 0
+
+                -- Point Label
+                local pointsLabel = StatsTab:CreateParagraph({
+                    Title = "Points Recieved",
+                    Content = "Start Minigame Autofarm to display points"
+                })
             end
         end
     end)()
-
-    -- Points Tracking
-    local points = 0
-
-    -- Point Label
-    local pointsLabel = StatsTab:CreateParagraph({
-        Title = "Points Recieved",
-        Content = "Start Minigame Autofarm to display points"
-    })
 
     -- Currencies Info Section
     StatsTab:CreateSection("Currency Stats")
@@ -96,7 +117,6 @@
                 MoneyUpdateLabel:Set({Title = "Current Money", Content = tostring(CurrentMoney1)})
                 task.wait(1)
             end
-            return
         else
             while true do
                 local MoneyLabelText2 = game:GetService("Players").LocalPlayer.PlayerGui.Main.Container.Hub.CashFrame.Frame.TextLabel
@@ -109,6 +129,7 @@
 
 
 -- Tab for Minigames
+if game.PlaceId == 14005966837 then
     -- Load Minigames Tab
     local MinigamesTab = Window:CreateTab("Minigames")
 
@@ -212,27 +233,25 @@
                 end
             end
 
-            -- Delete Fence
-            local Fence = workspace.Map.Prop:GetChildren()[16]
-            if Fence then 
-                Fence:Destroy()
-            end
+            -- Tween Teleport to NPC
+            local function TweenTeleporttoNPC()
+                local TweenService = game:GetService("TweenService")
+                local player = game.Players.LocalPlayer
 
-            -- Delete Building
-            local NpcBuilding = workspace.Map.Building["building 1"]
-            if NpcBuilding then
-                NpcBuilding:Destroy()
-            end
+                local targetPosition = CFrame.new(-4993.80078, 21.001173, 883.454773, 0.173624337, -0, -0.984811902, 0, 1, -0, 0.984811902, 0, 0.173624337)
 
-            -- Teleport to NPC
-            local function tpNPC()
-                local player = game.Players.LocalPlayer.Character
-                local humanoidRootPart = player:WaitForChild("HumanoidRootPart")
-                local targetLocation = workspace.Etc.NPC:FindFirstChild("Minigame")
-                
-                if targetLocation then
-                    humanoidRootPart.CFrame = targetLocation.WorldPivot
-                end
+                local tweenInfo = TweenInfo.new(
+                    5, -- Duration of the tween
+                    Enum.EasingStyle.Linear, -- Easing style
+                    Enum.EasingDirection.Out, -- Easing direction
+                    0, -- Repeat count (0 means no repetition)
+                    false, -- Should the tween reverse after it finishes?
+                    0 -- Delay before starting the tween
+                )
+
+                local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+                tween:Play()
             end
 
             -- Function to enter the minigame
@@ -284,8 +303,9 @@
             -- Minigame AutoFarm Callback
             if MgValue == true then
                 buycar()
+                TweenTeleporttoNPC()
+                task.wait(5)
                 optimizeON()
-                tpNPC()
                 enterMinigame("2021Avanza15CVT")
 
                 if optionWin then
@@ -496,9 +516,10 @@
             })
         end)()
     end
-
+end
 
 -- Tab for Misc
+if game.PlaceId == 14005966837 or game.PlaceId == 9233343468 or game.PlaceId == 9508940498 then
     -- Load MiscTab
     local MiscTab = Window:CreateTab("Misc")
 
@@ -677,6 +698,7 @@
             end
         end,
     })
+end
 
 
 -- Tab for Settings
