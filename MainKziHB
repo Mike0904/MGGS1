@@ -86,17 +86,6 @@
                     task.wait(1)
                 end
             end)()
-
-            if game.PlaceId == 14005966837 then
-                -- Points Tracking
-                local points = 0
-
-                -- Point Label
-                local pointsLabel = StatsTab:CreateParagraph({
-                    Title = "Points Recieved",
-                    Content = "Start Minigame Autofarm to display points"
-                })
-            end
         end
     end)()
 
@@ -313,15 +302,10 @@ if game.PlaceId == 14005966837 then
                     isMiniGameLoseActive = false
 
                     -- Detect when the character resets
+                    local player = game.Players.LocalPlayer
                     player.CharacterAdded:Connect(function()
                         task.wait(pendingLoopTime)
                         if isMiniGameWinActive then
-                            coroutine.wrap(function()
-                                -- Points Stats
-                                points = points + 10
-                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)()
-
                             enterMinigame("2021Avanza15CVT")
                         end
                     end)
@@ -333,15 +317,10 @@ if game.PlaceId == 14005966837 then
                     Jump()
 
                     -- Detect when the character resets
+                    local player = game.Players.LocalPlayer
                     player.CharacterAdded:Connect(function()
                         task.wait(pendingLoopTime)
                         if isMiniGameLoseActive then
-                            coroutine.wrap(function()
-                                -- Points Stats
-                                points = points + 5
-                                pointsLabel:Set({Title = "Points Received", Content = "Points: " .. points})
-                            end)()
-                            
                             enterMinigame("2021Avanza15CVT")
                             Jump()
                         end
@@ -354,11 +333,7 @@ if game.PlaceId == 14005966837 then
                 coroutine.wrap(function()
                     isMiniGameWinActive = false
                     isMiniGameLoseActive = false
-                    
-                    -- Points Stats
-                    points = 0
-                    pointsLabel:Set({Title = "Points Received", Content = "Start Minigame Autofarm to display points"})
-                    
+
                     -- Notify
                     Rayfield:Notify({
                         Title = "Minigames AutoFarm",
@@ -369,7 +344,11 @@ if game.PlaceId == 14005966837 then
                 end)()
 
                 -- Reset Character and leave the minigame
-                if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoid = character:WaitForChild("Humanoid")
+
+                if humanoid then
                     player.Character:FindFirstChildOfClass("Humanoid").Health = 0
                 end
             end
