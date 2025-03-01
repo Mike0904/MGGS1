@@ -293,7 +293,7 @@ if game.PlaceId == 14005966837 then
             if MgValue == true then
                 buycar()
                 TweenTeleporttoNPC()
-                task.wait(5)
+                task.wait(.1)
                 optimizeON()
                 enterMinigame("2021Avanza15CVT")
 
@@ -496,6 +496,126 @@ if game.PlaceId == 14005966837 then
         end)()
     end
 end
+
+
+-- Tab for Event
+if game.PlaceId == 9233343468 then
+    -- Load Event Tab
+    local EventTab = Window:CreateTab("Event")
+
+    -- Event Info
+    EventTab:CreateSection("Event CNY 2025")
+
+    -- Load AutoCollect Button
+    EventTab:CreateToggle({
+        Name = "Auto Collect Daily Task",
+        CurrentValue = false,
+        Flag = "Toggle1", 
+        Callback = function(Value)
+            local EventValue = Value
+        
+            if EventValue then
+                -- General Variables
+                local Angpao = workspace.Event.Client.Angpao
+                local Snake = workspace.Event.Client.Snake
+
+                -- Objects Table (item names)
+                local objects = {
+                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
+                }
+
+                -- Tween Teleport Function
+                local function TeleporttoItem(targetPosition)
+                    local TweenService = game:GetService("TweenService")
+                    local player = game.Players.LocalPlayer
+
+                    local tweenInfo = TweenInfo.new(
+                        5, -- Duration of the tween
+                        Enum.EasingStyle.Linear, -- Easing style
+                        Enum.EasingDirection.Out, -- Easing direction
+                        0, -- Repeat count
+                        false, -- Should the tween reverse after it finishes?
+                        0 -- Delay before starting the tween
+                    )
+
+                    local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+                    tween:Play()
+                end
+
+                -- Main loop
+                while EventValue do
+                    if not EventValue then
+                        break
+                    end
+                    
+                    for _, objectName in ipairs(objects) do
+                        local item = Angpao:FindFirstChild(objectName) or Snake:FindFirstChild(objectName)
+                        
+                        if item then
+                            local itemLocation = item.CFrame
+                            local prompt = item:FindFirstChild("ProximityPrompt")
+                            
+                            if prompt then
+                                -- Teleport to item
+                                TeleporttoItem(itemLocation)
+                                task.wait(5)
+
+                                -- Fire proximity prompt
+                                fireproximityprompt(prompt)
+                                task.wait(10)
+                            end
+                        end
+                    end
+                    task.wait(1)
+                end
+            else
+                -- Reset Character
+                local player = game.Players.LocalPlayer
+                local character = player.Character or player.CharacterAdded:Wait()
+                local humanoid = character:WaitForChild("Humanoid")
+
+                if humanoid then
+                    player.Character:FindFirstChildOfClass("Humanoid").Health = 0
+                end
+            end
+        end,
+    })
+
+    -- Load TeleporttoDaoza Button
+    EventTab:CreateButton({
+        Name = "Teleport to Claim Reward",
+        Callback = function()
+            -- Tween Teleport to Claim Reward
+            local TweenService = game:GetService("TweenService")
+            local player = game.Players.LocalPlayer
+            local ClaimNPC = workspace.Event.NPC.DA0ZA
+            local Prompt = ClaimNPC.ProximityPrompt
+
+            local targetPosition = ClaimNPC.WorldPivot
+
+            local tweenInfo = TweenInfo.new(
+                5, -- Duration of the tween
+                Enum.EasingStyle.Linear, -- Easing style
+                Enum.EasingDirection.Out, -- Easing direction
+                0, -- Repeat count (0 means no repetition)
+                false, -- Should the tween reverse after it finishes?
+                0 -- Delay before starting the tween
+            )
+
+            local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+            tween:Play()
+            task.wait(5)
+
+            if Prompt then
+                fireproximityprompt(Prompt)
+                task.wait(2)
+            end
+        end,
+    })
+end
+
+
 
 -- Tab for Misc
 if game.PlaceId == 14005966837 or game.PlaceId == 9233343468 or game.PlaceId == 9508940498 then
