@@ -227,7 +227,7 @@ if game.PlaceId == 14005966837 then
                 local TweenService = game:GetService("TweenService")
                 local player = game.Players.LocalPlayer
 
-                local targetPosition = CFrame.new(-4981.22412, 22.7794342, 882.752136, 0.821123064, 0.000134002752, -0.57075125, -3.07399896e-05, 1, 0.000190558436, 0.57075125, -0.000138927047, 0.821123064)
+                local targetPosition = CFrame.new(-4991.98242, 21.3338642, 887.75061, -0.999950171, 0, 0.0100132292, 0, 1, 0, -0.0100132292, 0, -0.999950171)
 
                 local tweenInfo = TweenInfo.new(
                     5, -- Duration of the tween
@@ -294,6 +294,8 @@ if game.PlaceId == 14005966837 then
                 optimizeON()
                 buycar()
                 TweenTeleporttoNPC()
+                task.wait
+                enterMinigame("2021Avanza15CVT")
 
                 if optionWin then
                     isMiniGameWinActive = true
@@ -350,14 +352,6 @@ if game.PlaceId == 14005966837 then
                     player.Character:FindFirstChildOfClass("Humanoid").Health = 0
                 end
             end
-        end,
-    })
-
-    -- Enter Minigame Button
-    local Button = MinigamesTab:CreateButton({
-        Name = "Enter Minigame",
-        Callback = function()
-            enterMinigame("2021Avanza15CVT")
         end,
     })
 
