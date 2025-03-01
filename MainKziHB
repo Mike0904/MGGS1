@@ -294,7 +294,7 @@ if game.PlaceId == 14005966837 then
                 optimizeON()
                 buycar()
                 TweenTeleporttoNPC()
-                task.wait
+                task.wait(.1)
                 enterMinigame("2021Avanza15CVT")
 
                 if optionWin then
