@@ -497,6 +497,7 @@ if game.PlaceId == 14005966837 then
     end
 end
 
+
 -- Tab for Ramadhan Event
 if game.PlaceId == 118108582994420 then
     -- Ramadhan Event Tab
@@ -644,7 +645,7 @@ if game.PlaceId == 118108582994420 then
         local targetPosition = CFrame.new(-4.62478638, 29038.0488, -304.56897, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 
         local tweenInfo = TweenInfo.new(
-            8, -- Duration of the tween
+            30, -- Duration of the tween
             Enum.EasingStyle.Linear, -- Easing style
             Enum.EasingDirection.Out, -- Easing direction
             0, -- Repeat count (0 means no repetition)
@@ -677,7 +678,7 @@ if game.PlaceId == 118108582994420 then
         Options = {"Task 1","Task 2","Task 3","Task 4","Task 5"},
         CurrentOption = {"None"},
         MultipleOptions = false,
-        Flag = nil,
+        Flag = nil
         Callback = function(Options)
             local SelectedTeleport = Options[1]
 
