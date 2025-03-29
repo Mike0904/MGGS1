@@ -497,6 +497,253 @@ if game.PlaceId == 14005966837 then
     end
 end
 
+-- Tab for Ramadhan Event
+if game.PlaceId == 118108582994420 then
+    -- Ramadhan Event Tab
+    local RamadhanEventTab = Window:CreateTab("Ramadhan Event")
+
+    -- Variables
+    local TeleportTask1 = false
+    local TeleportTask2 = false
+    local TeleportTask3 = false
+    local TeleportTask4 = false
+    local TeleportTask5 = false
+
+
+    -- Teleport to Julmann
+    local function TeleporttoJulmann()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-559.853821, 3.87011909, 1443.06836, -0.983128548, 0, 0.182916805, 0, 1, 0, -0.182916805, 0, -0.983128548)
+
+        local tweenInfo = TweenInfo.new(
+            15, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Teleport to Task 1
+    local function TeleporttoTask1()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-271.393066, 3.85742378, 3735.33911, -0.975525856, 0, -0.219885468, 0, 1, 0, 0.219885468, 0, -0.975525856)
+
+        local tweenInfo = TweenInfo.new(
+            15, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Teleport to Task 2
+    local function TeleporttoTask2()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-2415.18237, 4.87500238, 1178.04211, -0.274856925, 0, 0.961485207, 0, 1, 0, -0.961485207, 0, -0.274856925)
+
+        local tweenInfo = TweenInfo.new(
+            20, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Teleport to Task 3
+    local function TeleporttoTask3()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-3186.85718, 3.71099949, 2048.15723, 0.925189435, 0, 0.379505634, 0, 1, 0, -0.379505634, 0, 0.925189435)
+
+        local tweenInfo = TweenInfo.new(
+            20, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Teleport to Task 4
+    local function TeleporttoTask4()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-416.353088, 3.86724663, -79.2402039, 0.264528692, 0, 0.96437782, 0, 1, 0, -0.96437782, 0, 0.264528692)
+
+        local tweenInfo = TweenInfo.new(
+            20, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Teleport to Task 5
+    local function TeleporttoTask5()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(4581.25, 4.07422066, 460.780365, -0.992079973, 0, 0.125608042, 0, 1, 0, -0.125608042, 0, -0.992079973)
+
+        local tweenInfo = TweenInfo.new(
+            20, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Parkour Teleport
+    local function ParkourTeleport()
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+
+        local targetPosition = CFrame.new(-4.62478638, 29038.0488, -304.56897, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+        local tweenInfo = TweenInfo.new(
+            8, -- Duration of the tween
+            Enum.EasingStyle.Linear, -- Easing style
+            Enum.EasingDirection.Out, -- Easing direction
+            0, -- Repeat count (0 means no repetition)
+            false, -- Should the tween reverse after it finishes?
+            0 -- Delay before starting the tween
+        )
+
+        local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+
+        tween:Play()
+    end
+
+    -- Start Event Section
+    RamadhanEventTab:CreateSection("Start Event")
+    
+    -- Button to Start Event
+    RamadhanEventTab:CreateButton({
+        Name = "Start Event",
+        Callback = function()
+            TeleporttoJulmann()
+        end,
+    })
+
+    -- Select Task Section
+    RamadhanEventTab:CreateSection("Select Task")
+
+    -- Dropdown for Teleportation
+    RamadhanEventTab:CreateDropdown({
+        Name = "Select Teleportation",
+        Options = {"Task 1","Task 2","Task 3","Task 4","Task 5"},
+        CurrentOption = {"None"},
+        MultipleOptions = false,
+        Flag = nil
+        Callback = function(Options)
+            local SelectedTeleport = Options[1]
+
+            if SelectedTeleport == "Task 1" then
+                TeleportTask1 = true
+                TeleportTask2 = false
+                TeleportTask3 = false
+                TeleportTask4 = false
+                TeleportTask5 = false
+            elseif SelectedTeleport == "Task 2" then
+                TeleportTask1 = false
+                TeleportTask2 = true
+                TeleportTask3 = false
+                TeleportTask4 = false
+                TeleportTask5 = false
+            elseif SelectedTeleport == "Task 3" then
+                TeleportTask1 = false
+                TeleportTask2 = false
+                TeleportTask3 = true
+                TeleportTask4 = false
+                TeleportTask5 = false
+            elseif SelectedTeleport == "Task 4" then
+                TeleportTask1 = false
+                TeleportTask2 = false
+                TeleportTask3 = false
+                TeleportTask4 = true
+                TeleportTask5 = false
+            elseif SelectedTeleport == "Task 5" then
+                TeleportTask1 = false
+                TeleportTask2 = false
+                TeleportTask3 = false
+                TeleportTask4 = false
+                TeleportTask5 = true
+            end
+        end,
+    })
+
+    -- Teleport to Task Button
+    RamadhanEventTab:CreateButton({
+        Name = "Task Teleport",
+        Callback = function()
+            if TeleportTask1 then
+                TeleporttoTask1()
+            elseif TeleportTask2 then
+                TeleporttoTask2()
+            elseif TeleportTask3 then
+                TeleporttoTask3()
+            elseif TeleportTask4 then
+                TeleporttoTask4()
+            elseif TeleportTask5 then
+                TeleporttoTask5()
+            end
+        end,
+    })
+
+    -- Parkour Info Section
+    RamadhanEventTab:CreateSection("Teleport Parkour")
+
+    -- Button Parkour Teleport
+    RamadhanEventTab:CreateButton({
+        Name = "Parkour Teleport",
+        Callback = function()
+            ParkourTeleport()
+        end,
+    })
+end
 
 -- Tab for Event
 if game.PlaceId == 9233343468 then
