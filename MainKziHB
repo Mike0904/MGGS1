@@ -677,7 +677,7 @@ if game.PlaceId == 118108582994420 then
         Options = {"Task 1","Task 2","Task 3","Task 4","Task 5"},
         CurrentOption = {"None"},
         MultipleOptions = false,
-        Flag = nil
+        Flag = nil,
         Callback = function(Options)
             local SelectedTeleport = Options[1]
 
