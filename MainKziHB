@@ -226,20 +226,32 @@ if game.PlaceId == 14005966837 then
             local function TweenTeleporttoNPC()
                 local TweenService = game:GetService("TweenService")
                 local player = game.Players.LocalPlayer
-
-                local targetPosition = CFrame.new(-4991.98242, 21.3338642, 887.75061, -0.999950171, 0, 0.0100132292, 0, 1, 0, -0.0100132292, 0, -0.999950171)
+                local targetPosition1 = CFrame.new(-2489.53784, 22.787323, 2023.67688, -0.851605415, -0.00467691477, 0.524162531, 2.57208012e-05, 0.999959826, 0.00896407198, -0.524183393, 0.0076473346, -0.851571083)
 
                 local tweenInfo = TweenInfo.new(
-                    5, -- Duration of the tween
+                    12, -- Duration of the tween
                     Enum.EasingStyle.Linear, -- Easing style
                     Enum.EasingDirection.Out, -- Easing direction
                     0, -- Repeat count (0 means no repetition)
                     false, -- Should the tween reverse after it finishes?
                     0 -- Delay before starting the tween
                 )
+                local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition1})
+                tween:Play()
 
-                local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition})
+                task.wait(9)
 
+                local targetPosition2 = CFrame.new(-4991.98242, 21.3338642, 887.75061, -0.999950171, 0, 0.0100132292, 0, 1, 0, -0.0100132292, 0, -0.999950171)
+
+                local tweenInfo = TweenInfo.new(
+                    12, -- Duration of the tween
+                    Enum.EasingStyle.Linear, -- Easing style
+                    Enum.EasingDirection.Out, -- Easing direction
+                    0, -- Repeat count (0 means no repetition)
+                    false, -- Should the tween reverse after it finishes?
+                    0 -- Delay before starting the tween
+                )
+                local tween = TweenService:Create(player.Character.HumanoidRootPart, tweenInfo, {CFrame = targetPosition2})
                 tween:Play()
             end
 
